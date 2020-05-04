@@ -1,0 +1,62 @@
+<div class="panel panel-default" *ngIf="product; else productNotFound">
+    <div class="panel-heading">
+        <h4 class="pannel-title"> Product Form </h4>
+    </div>
+    <div class="panel-body">
+        <form *ngIf="product" 
+                (ngSubmit)="onSaveProduct()" 
+                id="product-form" 
+                #form="ngForm">
+            <div class="form-group"> 
+                <label for="sku">SKU</label> 
+                <input type="text" class="form-control"
+                    id="sku" name="sku" placeholder="sku" 
+                    required [(ngModel)]="product.sku"> 
+            </div>
+            <div class="form-group"> 
+                <label for="name">Name</label> 
+                <input type="text" class="form-control"
+                    id="name" name="name" placeholder="name" 
+                    required [(ngModel)]="product.name"> 
+            </div>
+            <div class="form-group"> 
+                <label for="category">Category</label> 
+                <input type="text" class="form-control"
+                    id="category" name="category" placeholder="category" 
+                    required [(ngModel)]="product.category"> 
+            </div>
+            <div class="form-group"> 
+                <label for="description">Description</label> 
+                <input type="text" class="form-control"
+                    id="description" name="description" placeholder="description" 
+                    [(ngModel)]="product.description"> 
+            </div>
+            <div class="form-group"> 
+                <label for="price">Price</label>
+                <input type="number" min="1" max="3" class="form-control" 
+                    id="price" name="price" placeholder="price" 
+                    [(ngModel)]="product.price"> 
+            </div>
+            <div class="form-group"> 
+                <label for="isAvailable">Available</label> 
+                <input type="boolean" class="form-control" 
+                    id="isAvailable" name="isAvailable" placeholder="isAvailable"
+                    [(ngModel)]="product.isAvailable"> 
+            </div> 
+
+            <button type="submit" class="btn btn-outline-primary" form="product-form"
+                [disabled]="form.invalid">
+                Save 
+            </button>
+            &nbsp;
+            <button type="button" class="btn btn-outline-secondary"
+                (click)="onGoBack()">
+                Back 
+            </button>
+        </form>
+    </div>
+</div>
+
+<ng-template #productNotFound>
+    Product not found.
+</ng-template>
