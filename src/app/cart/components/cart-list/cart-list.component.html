@@ -1,0 +1,12 @@
+<h1>My Cart:</h1>
+<div *ngIf="cartItems$; else emptyCartBlock">
+    <epa-cart-view  *ngFor="let item of cartItems$ | async"
+        [cartItem]="item"
+        (removeItem)="onRemoveItem($event)">
+    </epa-cart-view>
+</div>
+
+<ng-template #emptyCartBlock>
+    Cart is empty.
+    Please add some products into the card.
+</ng-template>

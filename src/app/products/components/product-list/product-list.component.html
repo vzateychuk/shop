@@ -1,0 +1,8 @@
+<h1>Product list:</h1>
+<epa-product-view
+    *ngFor='let product of productList | async'
+    [product]='product'
+    (addToCart)='onAddToCart($event)'
+    (editProduct)='onEditProduct($event)'>
+
+</epa-product-view>

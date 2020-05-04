@@ -1,0 +1,15 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4 class="pannel-title">Product: #{{cartItem.sku}}</h4>
+    </div>
+    <div class="panel-body">
+        <div class="header"> Amount: {{ cartItem.amount }} </div>
+        <div class="description">
+            Total price: {{ totalPrice | currency }}
+        </div>
+    </div>
+
+    <button class="btn btn-outline-primary" (click)="onRemoveItem()">
+        Remove
+    </button>
+</div>

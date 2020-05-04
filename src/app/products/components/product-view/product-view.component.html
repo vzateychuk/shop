@@ -1,0 +1,22 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4 class="pannel-title">#{{product.sku}}</h4>
+    </div>
+    <div class="panel-body">
+        <div class="header"> {{product.name}} ( {{product.isAvailable ? "Available" : "Not available"}} )</div>
+        <div class="description">
+            Price: {{ product.price | currency }}
+        </div>
+        <div class="meta">
+            <div> {{product.category}} </div>
+        </div>
+    </div>
+
+    <button class="btn btn-outline-primary" [disabled]="!product.isAvailable" (click)="onBuy()">
+        Buy
+    </button>
+    &nbsp;
+    <button class="btn btn-outline-secondary" (click)="onEditProduct()">
+        Edit
+    </button>
+</div>
