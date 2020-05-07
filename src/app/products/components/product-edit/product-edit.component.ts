@@ -12,7 +12,7 @@ import { switchMap } from 'rxjs/operators';
 })
 export class ProductEditComponent implements OnInit {
 
-  @Input() product: ProductModel;
+  @Input() product: ProductModel; // по всей видимости тут тоже декоратор не нужен
 
   constructor(
     private rounter: Router,
