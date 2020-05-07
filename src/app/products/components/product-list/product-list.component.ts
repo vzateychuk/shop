@@ -9,7 +9,8 @@ import { ProductService } from '../../services/product.service';
   styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent implements OnInit {
-  @Input() productList: Promise<Array<ProductModel>>;
+  @Input() productList: Promise<Array<ProductModel>>; // зачем тут используется декоратор @Input(),
+  // если это свойство заполняется тут внутри компонента?
 
   constructor(
     private router: Router,

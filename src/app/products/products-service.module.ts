@@ -10,3 +10,4 @@ import { CommonModule } from '@angular/common';
   ]
 })
 export class ProductsServiceModule { }
+// В 9 версии есть решение, которое не требует этого модуля
