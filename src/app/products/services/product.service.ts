@@ -1,12 +1,18 @@
 import { Injectable } from '@angular/core';
-import { ProductModel, Category } from 'src/app/shared';
+import { Product, Category, ProductModel } from 'src/app/shared';
 import { ProductsServiceModule } from '../products-service.module';
 
-const productList = [
-  new ProductModel( 'MYSHOES', 'Black Running Shoes', Category.Durable, true, 'Best shoes ever', 109.99 ),
-  new ProductModel( 'NEATOJACKET', 'Blue Jacket', Category.Durable,  true, '/assets/images/products/blue-jacket.jpg', 238.99 ),
-  new ProductModel( 'NICEHAT', 'A Nice Black Hat', Category.Nondurable, false, '/assets/images/products/black-hat.jpg', 29.99 )
+const productList: Array<Product> = [
+  new ProductModel(
+    'MYSHOES',
+    'Black Running Shoes',
+    Category.Durable,
+    71,
+    109.99,
+    'Best shoes ever'
+  ),
 ];
+
 const productListPromise = Promise.resolve(productList);
 
 @Injectable({
@@ -14,17 +20,17 @@ const productListPromise = Promise.resolve(productList);
 })
 export class ProductService {
 
-  public getProducts(): Promise<Array<ProductModel>> {
+  public getProducts(): Promise<Array<Product>> {
     return productListPromise;
   }
 
-  public getProduct(sku: string): Promise<ProductModel> {
+  public getProduct(sku: string): Promise<Product> {
     return this.getProducts()
               .then( list => list.find(p => p.sku === sku ) )
               .catch(() => Promise.reject('Error when getting product ' + sku));
   }
 
-  public updateProduct(product: ProductModel): void {
+  public updateProduct(product: Product): void {
     console.log('updated: ' + product.sku);
     const i = productList.findIndex(p => p.sku === product.sku);
     if (i > -1) {
@@ -32,7 +38,7 @@ export class ProductService {
     }
   }
 
-  public createProduct(product: ProductModel): void {
+  public createProduct(product: Product): void {
     console.log('created: ' + product.sku);
     productList.push(product);
   }

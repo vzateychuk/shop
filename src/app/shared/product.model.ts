@@ -1,14 +1,22 @@
 import { Category } from './category.enum';
 
-export class ProductModel {
+export interface Product {
+    sku: string;
+    name: string;
+    category: Category;
+    amountAvailable: number;
+    price: number;
+    description?: string;
+}
+
+export class ProductModel implements Product {
     constructor(
-        public sku: string = null,
-        public name: string = '',
+        public sku: string,
+        public name: string,
         public category: Category = Category.Nondurable,
-        public isAvailable: boolean = false,
-        public description?: string,
-        public price?: number
-    ) {
-        this.price = price || 0;
-    }
+        public amountAvailable: number = 1,
+        public price: number = 0,
+        public description?: string
+    ) { }
+
 }

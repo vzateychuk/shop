@@ -26,23 +26,23 @@
                     required [(ngModel)]="product.category"> 
             </div>
             <div class="form-group"> 
+                <label for="price">Price</label>
+                <input type="number" class="form-control" 
+                    id="price" name="price" placeholder="price" 
+                    required [(ngModel)]="product.price"> 
+            </div>
+            <div class="form-group"> 
+                <label for="amountAvailable">Available</label> 
+                <input type="number" class="form-control" 
+                    id="amountAvailable" name="amountAvailable" placeholder="Available amount"
+                    required [(ngModel)]="product.amountAvailable"> 
+            </div> 
+            <div class="form-group"> 
                 <label for="description">Description</label> 
                 <input type="text" class="form-control"
                     id="description" name="description" placeholder="description" 
                     [(ngModel)]="product.description"> 
             </div>
-            <div class="form-group"> 
-                <label for="price">Price</label>
-                <input type="number" min="1" max="3" class="form-control" 
-                    id="price" name="price" placeholder="price" 
-                    [(ngModel)]="product.price"> 
-            </div>
-            <div class="form-group"> 
-                <label for="isAvailable">Available</label> 
-                <input type="boolean" class="form-control" 
-                    id="isAvailable" name="isAvailable" placeholder="isAvailable"
-                    [(ngModel)]="product.isAvailable"> 
-            </div> 
 
             <button type="submit" class="btn btn-outline-primary" form="product-form"
                 [disabled]="form.invalid">

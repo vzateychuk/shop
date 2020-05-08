@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter, HostBinding } from '@angular/core';
-import { ProductModel } from 'src/app/shared';
+import { Product } from 'src/app/shared';
 
 @Component({
   selector: 'epa-product-view',
@@ -9,9 +9,9 @@ import { ProductModel } from 'src/app/shared';
 })
 export class ProductViewComponent {
 
-  @Input() product: ProductModel;
-  @Output() editProduct = new EventEmitter<ProductModel>();
-  @Output() addToCart = new EventEmitter<ProductModel>();
+  @Input() product: Product;
+  @Output() editProduct = new EventEmitter<Product>();
+  @Output() addToCart = new EventEmitter<Product>();
   @HostBinding('attr.class') cssClass = 'item';
 
   onEditProduct() {

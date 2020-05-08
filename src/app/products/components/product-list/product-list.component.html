@@ -1,6 +1,6 @@
 <h1>Product list:</h1>
 <epa-product-view
-    *ngFor='let product of productList | async'
+    *ngFor='let product of (productsState$ | async).data'
     [product]='product'
     (addToCart)='onAddToCart($event)'
     (editProduct)='onEditProduct($event)'>

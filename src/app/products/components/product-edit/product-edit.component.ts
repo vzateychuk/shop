@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ProductModel } from 'src/app/shared';
+import { Product } from 'src/app/shared';
 import { ProductService } from '../../services/product.service';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 // rxjs
@@ -12,7 +12,7 @@ import { switchMap } from 'rxjs/operators';
 })
 export class ProductEditComponent implements OnInit {
 
-  @Input() product: ProductModel;
+  product: Product;
 
   constructor(
     private rounter: Router,
@@ -22,7 +22,10 @@ export class ProductEditComponent implements OnInit {
 
   ngOnInit(): void {
     const productObserver = {
-      next: (product: ProductModel) => (this.product = { ...product }),
+      next: (product: Product) => {
+        console.log(product);
+        this.product = { ...product };
+      },
       error: (err: any) => console.log(err)
     };
     // it is not necessary to save subscription to route.paramMap
@@ -36,7 +39,7 @@ export class ProductEditComponent implements OnInit {
 
   onSaveProduct() {
     console.log('ProductEditComponent.onSaveProduct()');
-    const product = { ...this.product } as ProductModel;
+    const product = { ...this.product } as Product;
 
     if (product.sku) {
       this.productService.updateProduct(product);

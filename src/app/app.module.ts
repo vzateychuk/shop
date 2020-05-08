@@ -7,6 +7,7 @@ import { CartModule } from './cart/cart.module';
 import { ProductsModule } from './products/products.module';
 import { SharedModule } from './shared/shared.module';
 import { Router } from '@angular/router';
+import { RootStoreModule } from './core/@ngrx/root-store.module';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { Router } from '@angular/router';
     CartModule,
     ProductsModule,
     SharedModule,
+    RootStoreModule,
     AppRoutingModule
   ],
   providers: [],
