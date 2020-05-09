@@ -10,12 +10,12 @@ import { CartItemModel } from '../../models';
 export class CartViewComponent {
 
   @Input() cartItem: CartItemModel;
-  @Output() removeItem = new EventEmitter<CartItemModel>();
+  @Output() deleteItem = new EventEmitter<CartItemModel>();
 
   constructor() { }
 
-  onRemoveItem() {
-    this.removeItem.emit(this.cartItem);
+  onDeleteItem() {
+    this.deleteItem.emit(this.cartItem);
   }
 
   get totalPrice() {

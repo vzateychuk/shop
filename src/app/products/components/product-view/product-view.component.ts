@@ -11,6 +11,7 @@ export class ProductViewComponent {
 
   @Input() product: Product;
   @Output() editProduct = new EventEmitter<Product>();
+  @Output() deleteProduct = new EventEmitter<Product>();
   @Output() addToCart = new EventEmitter<Product>();
   @HostBinding('attr.class') cssClass = 'item';
 
@@ -18,7 +19,11 @@ export class ProductViewComponent {
     this.editProduct.emit(this.product);
   }
 
-  onBuy() {
+  onDeleteProduct() {
+    this.deleteProduct.emit(this.product);
+  }
+
+  onAddToCart() {
     this.addToCart.emit(this.product);
   }
 

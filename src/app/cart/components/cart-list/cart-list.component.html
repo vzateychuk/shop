@@ -1,8 +1,15 @@
 <h1>My Cart:</h1>
-<div *ngIf="cartItems$; else emptyCartBlock">
-    <epa-cart-view  *ngFor="let item of cartItems$ | async"
+<div *ngIf="cartState$; else emptyCartBlock">
+    <button class = 'btn btn-primary'
+        (click)='onDeleteAll()'>
+        Delete All
+    </button>
+    <br/>
+    <br/>
+
+    <epa-cart-view  *ngFor="let item of (cartState$ | async).data"
         [cartItem]="item"
-        (removeItem)="onRemoveItem($event)">
+        (deleteItem)="onDeleteItem($event)">
     </epa-cart-view>
 </div>
 

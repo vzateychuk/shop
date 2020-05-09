@@ -1,45 +1,104 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import { initialProductsState, ProductsState } from './products.state';
-import { loadProducts, loadProduct, createProduct, updateProduct, deleteProduct, buyProduct, } from './products.actions';
+import {
+  LoadProductsAction,
+  LoadProductsSuccess,
+  LoadProductsError,
+  LoadProductAction,
+  LoadProductSuccess,
+  LoadProductError,
+  CreateProductAction,
+  CreateProductSuccess,
+  CreateProductsError,
+  UpdateProductAction,
+  UpdateProductsError,
+  UpdateProductSuccess,
+  DeleteProductAction,
+  DeleteProductSuccess,
+  DeleteProductsError,
+  AddToCartAction,
+  AddToCartSuccess,
+  AddToCartError
+} from './products.actions';
+import { ProductModel, Product } from 'src/app/shared';
 
 export const productsFeatureKey = 'products';
 
 export const reducer = createReducer(
   initialProductsState,
-  on(loadProducts, state => {
-    console.log('--> loadProducts action being handled');
-    return {...state};
+  on(LoadProductsAction, state => {
+    return { ...state, loading: true };
   }),
-  on(loadProduct, state => {
-    console.log('--> loadProduct action being handled');
-    return {...state};
+  on(LoadProductsSuccess, (state, {products}) => {
+    const newdata = [...products];
+    return {...state, data: newdata, loading: false, loaded: true, selectedProduct: null};
   }),
-  on(createProduct, state => {
-    console.log('--> createProducts action being handled');
-    return {...state};
+
+  on(LoadProductAction, state => {
+    return {...state, loading: true};
   }),
-  on(updateProduct, state => {
-    console.log('--> updateProducts action being handled');
-    return {...state};
+  on(LoadProductSuccess, (state, {product}) => {
+    const selectedProduct = {...product};
+    return {...state, selectedProduct, loading: false, loaded: true};
   }),
-  on(deleteProduct, state => {
-    console.log('--> deleteProducts action being handled');
-    return {...state};
+
+  on(UpdateProductAction, state => {
+    return {...state, loading: true};
   }),
-  on(buyProduct, (state, {product}) => {
-    const sku = product.sku;
-    console.log('--> buyProduct action being handled, sku: #' + sku);
-    // new array of data
+  on(UpdateProductSuccess, (state, {product}) => {
+    const newdata = [...state.data];
+    const idx = newdata.findIndex(p => p.sku === product.sku);
+    if (idx > -1) {
+      newdata[idx] = {...product};
+    }
+    return {...state, data: newdata, loading: false, loaded: true};
+  }),
+
+  on(CreateProductAction, state => {
+    return {...state, loading: true};
+  }),
+  on(CreateProductSuccess, (state, {product}) => {
+    const data = [...state.data, {...product}];
+    return {...state, data, loading: false, loaded: true};
+  }),
+
+  on(DeleteProductAction, state => {
+    return {...state, loading: true};
+  }),
+  on(DeleteProductSuccess, (state, {product}) => {
+    const data = state.data.filter(p => p.sku !== product.sku);
+    return {...state, data, loading: false, loaded: true};
+  }),
+
+  on(AddToCartAction, state => {
+    return {...state, loading: true};
+  }),
+  on(AddToCartSuccess, (state, {product}) => {
     const data = state.data.map(p => {
-      if (p.sku === sku) {
-        return {...product, amountAvailable: (p.amountAvailable - 1) };
-      } else {
-        return p;
-      }
-    }  );
+        if (p.sku === product.sku) {
+          return {...product, amountAvailable: (p.amountAvailable - 1) };
+        } else {
+          return p;
+        }
+    });
+
     // return new state
     return {...state, data};
+  }),
+
+  // error handler
+  on(
+    LoadProductsError,
+    LoadProductError,
+    UpdateProductsError,
+    CreateProductsError,
+    DeleteProductsError,
+    AddToCartError,
+    (state, {error}) => {
+      console.log('ErrorHandler invoked');
+      return {...state, error, loading: false, loaded: false};
   })
+
 );
 
 export function productsReducer(state: ProductsState | undefined, action: Action) {

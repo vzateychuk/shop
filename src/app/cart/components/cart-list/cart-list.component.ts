@@ -1,7 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { CartItemModel } from '../../models';
+import { CartItemModel, CartItem } from '../../models';
 import { CartService } from '../../services/cart.service';
 import { Observable } from 'rxjs';
+import { AppState } from 'src/app/core/@ngrx';
+import { Store, select } from '@ngrx/store';
+import { CartState, cartStateSelector, DeleteCartItemAction, DeleteAllCartItemsAction } from 'src/app/core/@ngrx/cart';
 
 @Component({
   selector: 'epa-cart-list',
@@ -9,20 +12,24 @@ import { Observable } from 'rxjs';
   styleUrls: ['./cart-list.component.css']
 })
 export class CartListComponent implements OnInit {
-
+  cartState$: Observable<CartState>;
   cartItems$: Observable<Array<CartItemModel>>;
 
   constructor(
-    private cartService: CartService
+    private store: Store<AppState>
   ) { }
 
   ngOnInit(): void {
-    this.cartItems$ = this.cartService.getCartItems();
+    this.cartState$ = this.store.pipe(select(cartStateSelector));
   }
 
-  onRemoveItem(cartItem: CartItemModel) {
-    console.log('CartList.onRemoveItem: ' + cartItem.sku);
-    this.cartService.removeItem(cartItem);
+  onDeleteItem(item: CartItemModel) {
+    const deleted = {...item};
+    this.store.dispatch(DeleteCartItemAction({item: deleted}));
+  }
+
+  onDeleteAll() {
+    this.store.dispatch( DeleteAllCartItemsAction() );
   }
 
 }
