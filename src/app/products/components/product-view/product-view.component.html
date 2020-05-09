@@ -4,12 +4,9 @@
     </div>
     <div class="panel-body">
         <div class="header"> {{product.name}} ( {{product.amountAvailable>0 ? 'Available' : 'Not available' }}: {{product.amountAvailable}} )</div>
-        <div class="description">
-            Price: {{ product.price | currency }}
-        </div>
-        <div class="meta">
-            <div> {{product.category}} </div>
-        </div>
+        <div>Price: {{ product.price | currency }} </div>
+        <div> {{product.category}} </div>
+        <div> Description: {{ product.description }}</div>
     </div>
 
     <button class="btn btn-outline-primary" [disabled]="product.amountAvailable<=0" (click)="onBuy()">
@@ -18,5 +15,9 @@
     &nbsp;
     <button class="btn btn-outline-secondary" (click)="onEditProduct()">
         Edit
+    </button>
+    &nbsp;
+    <button class="btn btn-outline-warning" (click)="onDeleteProduct()">
+        Delete
     </button>
 </div>

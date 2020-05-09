@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Product } from 'src/app/shared';
 import { Router } from '@angular/router';
 // @ngrx
-import { AppState, ProductsState, buyProduct } from 'src/app/core/@ngrx';
+import { AppState, ProductsState, buyProduct, loadProductsAction, deleteProductAction } from 'src/app/core/@ngrx';
 import { Store, select } from '@ngrx/store';
 // rxjs
 import { Observable } from 'rxjs';
@@ -21,18 +21,26 @@ export class ProductListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    // Subscribe for the dataflow
     this.productsState$ = this.store.pipe( select('productsState') );
+    // Initiate dataflow
+    this.store.dispatch( loadProductsAction() );
+  }
+
+  onAddToCart(productToBuy: Product) {
+    this.store.dispatch(buyProduct( {product: productToBuy}) );
   }
 
   onEditProduct(product: Product) {
     this.router.navigate(['products/edit', product.sku]);
   }
 
-  onAddToCart(productToBuy: Product) {
-    console.log('ProductListComponent.onAddToCart: ' + productToBuy.sku);
-//    const productToBuy: Product = {...productToBuy};
-//    this.store.dispatch(buyProduct( {product: productToBuy}) );
-    this.store.dispatch(buyProduct( {product: productToBuy}) );
+  onCreateProduct(event) {
+    this.router.navigate(['products/add']);
+  }
+
+  onDeleteProduct(productToDelete: Product) {
+    this.store.dispatch(deleteProductAction( {product: productToDelete}) );
   }
 
 }

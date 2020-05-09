@@ -1,8 +1,19 @@
 <h1>Product list:</h1>
+
+<button class = 'btn btn-primary'
+    (click)='onCreateProduct($event)'>
+    New Product
+</button>
+<br/>
+<br/>
+
+<p *ngIf="(productsState$ | async).error as error">{{error}}</p>
+
 <epa-product-view
     *ngFor='let product of (productsState$ | async).data'
     [product]='product'
-    (addToCart)='onAddToCart($event)'
-    (editProduct)='onEditProduct($event)'>
+    (buyProduct)='onAddToCart($event)'
+    (editProduct)='onEditProduct($event)'
+    (deleteProduct)='onDeleteProduct($event)'>
 
 </epa-product-view>

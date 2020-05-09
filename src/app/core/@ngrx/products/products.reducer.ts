@@ -1,31 +1,82 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import { initialProductsState, ProductsState } from './products.state';
-import { loadProducts, loadProduct, createProduct, updateProduct, deleteProduct, buyProduct, } from './products.actions';
+import {
+  loadProductsAction,
+  loadProductsSuccess,
+  loadProductsError,
+  loadProductAction,
+  loadProductSuccess,
+  loadProductError,
+  createProductAction,
+  createProductSuccess,
+  createProductsError,
+  updateProductAction,
+  updateProductsError,
+  updateProductSuccess,
+  deleteProductAction,
+  deleteProductSuccess,
+  deleteProductsError,
+  buyProduct
+} from './products.actions';
 
 export const productsFeatureKey = 'products';
 
 export const reducer = createReducer(
   initialProductsState,
-  on(loadProducts, state => {
-    console.log('--> loadProducts action being handled');
-    return {...state};
+  on(loadProductsAction, state => {
+    return { ...state, loading: true };
   }),
-  on(loadProduct, state => {
-    console.log('--> loadProduct action being handled');
-    return {...state};
+  on(loadProductsSuccess, (state, {products}) => {
+    const newdata = [...products];
+    return {...state, data: newdata, loading: false, loaded: true, selectedProduct: null};
   }),
-  on(createProduct, state => {
-    console.log('--> createProducts action being handled');
-    return {...state};
+  // error handler
+  on(
+    loadProductsError,
+    loadProductError,
+    updateProductsError,
+    createProductsError,
+    deleteProductsError,
+    (state, {error}) => {
+      return {...state, error, loading: false, loaded: false};
   }),
-  on(updateProduct, state => {
-    console.log('--> updateProducts action being handled');
-    return {...state};
+
+  on(loadProductAction, state => {
+    return {...state, loading: true};
   }),
-  on(deleteProduct, state => {
-    console.log('--> deleteProducts action being handled');
-    return {...state};
+  on(loadProductSuccess, (state, {product}) => {
+    const selectedProduct = {...product};
+    return {...state, selectedProduct, loading: false, loaded: true};
   }),
+
+  on(updateProductAction, state => {
+    return {...state, loading: true};
+  }),
+  on(updateProductSuccess, (state, {product}) => {
+    const newdata = [...state.data];
+    const idx = newdata.findIndex(p => p.sku === product.sku);
+    if (idx > -1) {
+      newdata[idx] = {...product};
+    }
+    return {...state, data: newdata, loading: false, loaded: true};
+  }),
+
+  on(createProductAction, state => {
+    return {...state, loading: true};
+  }),
+  on(createProductSuccess, (state, {product}) => {
+    const data = [...state.data, {...product}];
+    return {...state, data, loading: false, loaded: true};
+  }),
+
+  on(deleteProductAction, state => {
+    return {...state, loading: true};
+  }),
+  on(deleteProductSuccess, (state, {product}) => {
+    const data = state.data.filter(p => p.sku !== product.sku);
+    return {...state, data, loading: false, loaded: true};
+  }),
+
   on(buyProduct, (state, {product}) => {
     const sku = product.sku;
     console.log('--> buyProduct action being handled, sku: #' + sku);
