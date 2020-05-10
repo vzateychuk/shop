@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { CartRoutingModule } from './cart-routing.module';
 import { CartListComponent, CartViewComponent } from './components';
 import { CartServicesModule } from './cart-services.module';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
@@ -12,6 +13,7 @@ import { CartServicesModule } from './cart-services.module';
     CartViewComponent
   ],
   imports: [
+    SharedModule,
     FormsModule,
     CommonModule,
     CartServicesModule,

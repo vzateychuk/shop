@@ -13,7 +13,6 @@ export class ProductViewComponent {
   @Output() editProduct = new EventEmitter<Product>();
   @Output() deleteProduct = new EventEmitter<Product>();
   @Output() addToCart = new EventEmitter<Product>();
-  @HostBinding('attr.class') cssClass = 'item';
 
   onEditProduct() {
     this.editProduct.emit(this.product);

@@ -1,8 +1,8 @@
 <h1>Product list:</h1>
 
-<button class = 'btn btn-primary'
+<button class = 'btn btn-outline-primary'
     (click)='onCreateProduct($event)'>
-    New Product
+    +New Product
 </button>
 <br/>
 <br/>
@@ -14,6 +14,7 @@
     [product]='product'
     (addToCart)='onAddToCart($event)'
     (editProduct)='onEditProduct($event)'
-    (deleteProduct)='onDeleteProduct($event)'>
+    (deleteProduct)='onDeleteProduct($event)'
+    epaHost>
 
 </epa-product-view>

@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ProductListComponent, ProductViewComponent, ProductEditComponent } from './components';
 import { ProductsRoutingModule } from './products-routing.module';
 import { ProductsServiceModule } from './products-service.module';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
@@ -12,6 +13,7 @@ import { ProductsServiceModule } from './products-service.module';
     ProductViewComponent,
     ProductEditComponent],
   imports: [
+    SharedModule,
     FormsModule,
     CommonModule,
     ProductsServiceModule,

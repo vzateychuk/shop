@@ -40,13 +40,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
           this.editMode = true;
           this.product = {...state.selectedProduct};
         } else {
-          this.product = new ProductModel(
-            'public sku: string',
-            'public name: string',
-            Category.Durable,
-            1,
-            111
-          );
+          this.product = new ProductModel();
         }
       },
       error(err) {

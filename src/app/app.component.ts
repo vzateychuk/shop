@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 
 @Component({
   // tslint:disable-next-line: component-selector
@@ -6,6 +6,10 @@ import { Component } from '@angular/core';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  title = 'shop';
+export class AppComponent implements AfterViewInit {
+  @ViewChild('appTitle') titleTag: ElementRef<HTMLInputElement>;
+
+  ngAfterViewInit(): void {
+    this.titleTag.nativeElement.innerHTML = 'My Shop application';
+  }
 }

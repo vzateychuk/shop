@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy, HostBinding, HostListener } from '@angular/core';
 import { CartItemModel } from '../../models';
 
 @Component({
@@ -8,11 +8,8 @@ import { CartItemModel } from '../../models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CartViewComponent {
-
   @Input() cartItem: CartItemModel;
   @Output() deleteItem = new EventEmitter<CartItemModel>();
-
-  constructor() { }
 
   onDeleteItem() {
     this.deleteItem.emit(this.cartItem);

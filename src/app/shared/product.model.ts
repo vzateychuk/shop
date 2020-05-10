@@ -17,7 +17,7 @@ export class ProductModel implements Product {
         public amountAvailable: number = 1,
         public price: number = 0,
         public description?: string
-    ) { 
+    ) {
         this.description = description || '';
     }
 
