@@ -30,8 +30,8 @@ export const reducer = createReducer(
     return { ...state, loading: true };
   }),
   on(LoadProductsSuccess, (state, {products}) => {
-    const newdata = [...products];
-    return {...state, data: newdata, loading: false, loaded: true, selectedProduct: null};
+    const data = [...products];
+    return {...state, data, loading: false, loaded: true, selectedProduct: null};
   }),
 
   on(LoadProductAction, state => {

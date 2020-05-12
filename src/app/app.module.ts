@@ -1,13 +1,15 @@
 // core modules
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 // Application
 import { AppComponent } from './app.component';
 import { CartModule } from './cart/cart.module';
 import { ProductsModule } from './products/products.module';
+import { UsersModule } from './users/users.module';
 import { SharedModule } from './shared/shared.module';
-import { Router } from '@angular/router';
 
 // Store
 import { RootStoreModule } from './core/@ngrx/root-store.module';
@@ -26,8 +28,10 @@ import { AppRoutingModule } from './app-routing.module';
   imports: [
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     BrowserModule,
+    HttpClientModule,
     CartModule,
     ProductsModule,
+    UsersModule,
     SharedModule,
     RootStoreModule,
     AppRoutingModule

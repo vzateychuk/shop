@@ -1,0 +1,76 @@
+{
+  "products": [
+    {
+      "sku": "MYSHOES",
+      "name": "My shoes",
+      "category": "Durable",
+      "amountAvailable": 3,
+      "price": 109.99,
+      "description": "Black Running Shoes"
+    },
+    {
+      "sku": "NEATOJACKET",
+      "name": "Blue Jacket",
+      "category": "Durable",
+      "amountAvailable": 2,
+      "price": 238.99,
+      "description": "blue jacket from my tailor"
+    },
+    {
+      "sku": "PANTS",
+      "name": "My beautiful pants",
+      "category": "Durable",
+      "amountAvailable": 4,
+      "price": 117.99,
+      "description": "Attractive pants"
+    },
+    {
+      "sku": "NICEHAT",
+      "name": "A Nice Black Hat",
+      "category": "Nondurable",
+      "amountAvailable": 3,
+      "price": 29.99,
+      "description": "Just a funny hat"
+    },
+    {
+      "sku": "GLOWES",
+      "name": "Funny glowes",
+      "category": "DURABLE",
+      "amountAvailable": 7,
+      "price": 18.95,
+      "description": "Just a funny glowes"
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "firstName": "Anna",
+      "lastName": "Borisova"
+    },
+    {
+      "id": 2,
+      "firstName": "Boris",
+      "lastName": "Vlasov"
+    },
+    {
+      "id": 3,
+      "firstName": "Clara",
+      "lastName": "Dmitrieva"
+    },
+    {
+      "id": 4,
+      "firstName": "Dariya",
+      "lastName": "Egorova"
+    },
+    {
+      "id": 5,
+      "firstName": "Fatima",
+      "lastName": "Georg"
+    },
+    {
+      "id": 6,
+      "firstName": "Hunna",
+      "lastName": "Jackson"
+    }
+  ]
+}

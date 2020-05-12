@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng lint --typeCheck && ng serve -o",
+    "start": "ng lint --typeCheck && concurrently --kill-others \"ng serve -o\" \"json-server --watch db\/db.json --id sku\"",
     "build": "ng lint --typeCheck && ng build",
     "test": "ng lint --typeCheck && ng test",
     "lint": "ng lint --typeCheck",
@@ -37,6 +37,7 @@
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^12.11.1",
     "codelyzer": "^5.1.2",
+    "concurrently": "^5.2.0",
     "jasmine-core": "~3.5.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~4.3.0",

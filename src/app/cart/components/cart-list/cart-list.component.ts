@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { CartItemModel, CartItem } from '../../models';
-import { CartService } from '../../services/cart.service';
 import { Observable } from 'rxjs';
 import { AppState } from 'src/app/core/@ngrx';
 import { Store, select } from '@ngrx/store';

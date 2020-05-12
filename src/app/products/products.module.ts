@@ -11,7 +11,8 @@ import { SharedModule } from '../shared/shared.module';
   declarations: [
     ProductListComponent,
     ProductViewComponent,
-    ProductEditComponent],
+    ProductEditComponent
+  ],
   imports: [
     SharedModule,
     FormsModule,

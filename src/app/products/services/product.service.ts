@@ -1,69 +1,77 @@
 import { Injectable } from '@angular/core';
-import { Product, Category, ProductModel } from 'src/app/shared';
+import { Product } from 'src/app/shared';
 import { ProductsServiceModule } from '../products-service.module';
-import { Observable, of } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: ProductsServiceModule
 })
 export class ProductService {
 
-  private productList: Array<Product> = [
-    new ProductModel( 'MYSHOES', 'My shoes', Category.Durable, 3, 109.99, 'Black Running Shoes' ),
-    new ProductModel( 'NEATOJACKET', 'Blue Jacket', Category.Durable, 2, 238.99),
-    new ProductModel( 'PANTS', 'My buiteful pants', Category.Durable, 4, 117.99 ),
-    new ProductModel( 'NICEHAT', 'A Nice Black Hat', Category.Nondurable, 1, 29.99 ),
-  ];
-  private productListObservable = of(this.productList);
+  private baseUrl = 'http://localhost:3000/products';
 
-  public getProducts(): Promise<Array<Product>> {
-    return this.productListObservable.toPromise();
+  constructor( private http: HttpClient ) {}
+
+  public getProducts(): Promise<Product[]> {
+    return this.http
+      .get(this.baseUrl)
+      .toPromise()  // because get(...) returns Observable
+      .then (resp => resp as Product[])
+      .catch(this.errorHandler);
   }
 
   public getProduct(sku: string): Promise<Product> {
-    return this.getProducts()
-              .then( list => list.find(p => p.sku === sku ) )
-              .catch(() => Promise.reject('Error when getting product ' + sku));
+    const productUrl = `${this.baseUrl}/${sku}`;
+
+    return this.http
+      .get(productUrl)
+      .toPromise()
+      .then(resp => resp as Product)
+      .catch(this.errorHandler);
   }
 
   public updateProduct(product: Product): Promise<Product> {
-    const idx = this.productList.findIndex(p => p.sku === product.sku);
-    const updated = {...product} as ProductModel;
-    if (idx > -1) {
-      const array = [... this.productList];
-      array.splice(idx, 1, updated);
-      this.productList = [...array];
-    }
-    return Promise.resolve(updated);
+    const productUrl = `${this.baseUrl}/${product.sku}`;
+    const body = JSON.stringify(product);
+    const options = {
+      headers: new HttpHeaders({'Content-Type': 'application/json'})
+    };
+    return this.http
+      .put(productUrl, body, options)
+      .toPromise()
+      .then(resp => resp as Product)
+      .catch(this.errorHandler);
   }
 
   public createProduct(product: Product): Promise<Product> {
-    const created = {...product} as ProductModel;
-    const array = [... this.productList];
-    array.push(created);
-    this.productList = [...array];
-    return Promise.resolve(created);
+    const body = JSON.stringify(product);
+    const options = {
+      headers: new HttpHeaders({'Content-Type': 'application/json'})
+    };
+    return this.http
+      .post(this.baseUrl, body, options)
+      .toPromise()
+      .then(resp => resp as Product)
+      .catch(this.errorHandler);
   }
 
-  public deleteProduct(product: Product): Promise<Product> {
-    const idx = this.productList.findIndex(p => p.sku === product.sku);
-    const deleted = {...product} as ProductModel;
-    if (idx > -1) {
-      const array = [... this.productList];
-      array.splice(idx, 1);
-      this.productList = [...array];
-    }
-    return Promise.resolve(deleted);
+  public deleteProduct(product: Product): Promise<any> {
+    const productUrl = `${this.baseUrl}/${product.sku}`;
+
+    return this.http
+      .delete(productUrl)
+      .toPromise()
+      // json-server return empty object so we don't use .then(...)
+      .catch(this.errorHandler);
   }
 
   public CheckIfAvailable(product: Product): Promise<boolean> {
-    const idx = this.productList.findIndex(p => p.sku === product.sku);
-    const reducedAmount = product.amountAvailable - 1;
-    if (idx > -1 && reducedAmount >= 0) {
-      return Promise.resolve(true);
-    } else {
-      return Promise.reject(new Error('No enough amount available of: ' + product.sku));
-    }
+    return Promise.resolve(true);
   }
 
+  /** Private methods area */
+  private errorHandler(error: any): Promise<any> {
+    console.log('An error accured', error);
+    return Promise.reject(error.message || error);
+  }
 }
