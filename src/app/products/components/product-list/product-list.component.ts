@@ -32,7 +32,8 @@ export class ProductListComponent implements OnInit {
     // Subscribe for the data
     this.productsState$ = this.store.pipe( select(productsStateSelector) );
     // Initiate dataflow
-    this.store.dispatch( LoadProductsAction() );
+    this.store.dispatch( LoadProductsAction() ); // вероятно всего после генерации этого экшина второй раз, данные перезатираются
+    // надо помониторить в NgRx Store DevTools
   }
 
   onAddToCart(productToBuy: Product) {
