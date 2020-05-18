@@ -1,13 +1,14 @@
-import { reducer, initialState } from './products.reducer';
+import { reducer } from '..';
+import {initialProductsState} from '../products.state';
 
 describe('Products Reducer', () => {
   describe('an unknown action', () => {
     it('should return the previous state', () => {
       const action = {} as any;
 
-      const result = reducer(initialState, action);
+      const result = reducer(initialProductsState, action);
 
-      expect(result).toBe(initialState);
+      expect(result).toBe(initialProductsState);
     });
   });
 });

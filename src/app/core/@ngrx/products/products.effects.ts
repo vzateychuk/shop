@@ -25,7 +25,6 @@ import {
   AddToCartError
 } from './products.actions';
 import { AppState } from '..';
-import { AddCartItemAction } from '../cart';
 
 @Injectable()
 export class  ProductsEffects {
@@ -99,13 +98,10 @@ export class  ProductsEffects {
     this.actions$.pipe(
       ofType(AddToCartAction),
       pluck('product'),
-      concatMap( addProduct =>
-        this.productService.CheckIfAvailable(addProduct)
-          .then( avaliable => {
-            this.store.dispatch(AddCartItemAction({product: addProduct}));
-            return AddToCartSuccess({product: addProduct});
-          })
-          .catch( err => AddToCartError(err) )
+      concatMap(prod =>
+        this.productService.addToCard(prod, 1)
+        .then(resp => AddToCartSuccess({product: resp}))
+        .catch(err => AddToCartError(err))
       )
     )
   );

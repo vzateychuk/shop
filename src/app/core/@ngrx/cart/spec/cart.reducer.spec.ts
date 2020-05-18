@@ -1,13 +1,14 @@
-import { reducer, initialState } from '../cart.reducer';
+import { reducer } from '../cart.reducer';
+import { initialCartState } from '../cart.state';
 
 describe('Cart Reducer', () => {
   describe('an unknown action', () => {
     it('should return the previous state', () => {
       const action = {} as any;
 
-      const result = reducer(initialState, action);
+      const result = reducer(initialCartState, action);
 
-      expect(result).toBe(initialState);
+      expect(result).toBe(initialCartState);
     });
   });
 });

@@ -9,14 +9,6 @@
       "description": "Black Running Shoes"
     },
     {
-      "sku": "NEATOJACKET",
-      "name": "Blue Jacket",
-      "category": "Durable",
-      "amountAvailable": 2,
-      "price": 238.99,
-      "description": "blue jacket from my tailor"
-    },
-    {
       "sku": "PANTS",
       "name": "My beautiful pants",
       "category": "Durable",

@@ -9,15 +9,15 @@
         <div> Description: {{ product.description }}</div>
     </div>
 
-    <button class="btn btn-outline-primary" [disabled]="product.amountAvailable<=0" (click)="onAddToCart()">
+    <button id="addToCart" class="btn btn-outline-primary" [disabled]="product.amountAvailable<=0" (click)="onAddToCart()">
         +Add to Cart
     </button>
     &nbsp;
-    <button class="btn btn-outline-secondary" (click)="onEditProduct()">
+    <button id="editProduct" class="btn btn-outline-secondary" (click)="onEditProduct()">
         Edit
     </button>
     &nbsp;
-    <button class="btn btn-outline-danger" (click)="onDeleteProduct()">
+    <button id="deleteProduct" class="btn btn-outline-danger" (click)="onDeleteProduct()">
         Delete
     </button>
 </div>

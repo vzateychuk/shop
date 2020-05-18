@@ -1,11 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Observable } from 'rxjs';
-
-import { ProductsEffects } from './products.effects';
+import { Observable, of } from 'rxjs';
+import { ProductsEffects } from '..';
 
 describe('ProductsEffects', () => {
-  const actions$: Observable<any>;
+  const actions$: Observable<any> = of(true);
   let effects: ProductsEffects;
 
   beforeEach(() => {

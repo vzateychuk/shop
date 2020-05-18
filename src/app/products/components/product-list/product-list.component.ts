@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import {
   AppState,
   ProductsState,
-  AddToCartAction as AddToCartAction,
+  AddToCartAction,
   LoadProductsAction,
   DeleteProductAction,
   productsStateSelector
@@ -13,7 +13,6 @@ import {
 import { Store, select } from '@ngrx/store';
 // rxjs
 import { Observable } from 'rxjs';
-import { AddCartItemAction } from 'src/app/core/@ngrx/cart/cart.actions';
 
 @Component({
   selector: 'epa-product-list',

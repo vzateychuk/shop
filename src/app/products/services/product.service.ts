@@ -8,15 +8,18 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class ProductService {
 
-  private baseUrl = 'http://localhost:3000/products';
+  baseUrl = 'http://localhost:3000/products';
+  private options = {
+    headers: new HttpHeaders({'Content-Type': 'application/json'})
+  };
 
   constructor( private http: HttpClient ) {}
 
-  public getProducts(): Promise<Product[]> {
+  public getProducts(): Promise<Array<Product>> {
     return this.http
       .get(this.baseUrl)
       .toPromise()  // because get(...) returns Observable
-      .then (resp => resp as Product[])
+      .then (resp => resp as Array<Product>)
       .catch(this.errorHandler);
   }
 
@@ -33,11 +36,9 @@ export class ProductService {
   public updateProduct(product: Product): Promise<Product> {
     const productUrl = `${this.baseUrl}/${product.sku}`;
     const body = JSON.stringify(product);
-    const options = {
-      headers: new HttpHeaders({'Content-Type': 'application/json'})
-    };
+
     return this.http
-      .put(productUrl, body, options)
+      .put(productUrl, body, this.options)
       .toPromise()
       .then(resp => resp as Product)
       .catch(this.errorHandler);
@@ -45,11 +46,9 @@ export class ProductService {
 
   public createProduct(product: Product): Promise<Product> {
     const body = JSON.stringify(product);
-    const options = {
-      headers: new HttpHeaders({'Content-Type': 'application/json'})
-    };
+
     return this.http
-      .post(this.baseUrl, body, options)
+      .post(this.baseUrl, body, this.options)
       .toPromise()
       .then(resp => resp as Product)
       .catch(this.errorHandler);
@@ -62,11 +61,19 @@ export class ProductService {
       .delete(productUrl)
       .toPromise()
       // json-server return empty object so we don't use .then(...)
+      .then(resp => resp as Product)
       .catch(this.errorHandler);
   }
 
-  public CheckIfAvailable(product: Product): Promise<boolean> {
-    return Promise.resolve(true);
+  public addToCard(product: Product, amount: number): Promise<Product> {
+    const reducedAmount = product.amountAvailable - amount;
+    if (reducedAmount >= 0) {
+      const updated = {...product, amountAvailable: reducedAmount};
+      // TODO: add updateCart enpoint
+      return this.updateProduct(updated);
+    } else {
+      return Promise.reject('Not enough product');
+    }
   }
 
   /** Private methods area */
