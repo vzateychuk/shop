@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Product } from 'src/app/shared';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 // @ngrx
 import {
   AppState,
@@ -24,6 +24,7 @@ export class ProductListComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private store: Store<AppState>
   ) { }
 
@@ -39,11 +40,12 @@ export class ProductListComponent implements OnInit {
   }
 
   onEditProduct(product: Product) {
-    this.router.navigate(['products/edit', product.sku]);
+    const link = ['edit', product.sku];
+    this.router.navigate(link, {relativeTo: this.route});
   }
 
   onCreateProduct(event) {
-    this.router.navigate(['products/add']);
+    this.router.navigate(['add'], {relativeTo: this.route});
   }
 
   onDeleteProduct(productToDelete: Product) {

@@ -3,7 +3,10 @@ import { Routes, RouterModule } from '@angular/router';
 import { CartListComponent } from './components';
 
 const routes: Routes = [
-  { path: 'cart', component: CartListComponent}
+  {
+    path: 'cart',
+    component: CartListComponent
+  }
 ];
 
 @NgModule({

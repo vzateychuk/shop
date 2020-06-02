@@ -1,10 +1,22 @@
 {
+  "cart": [
+    {
+      "sku": "MYSHOES",
+      "price": 111,
+      "amount": 56
+    },
+    {
+      "sku": "PANTS",
+      "price": 27.4,
+      "amount": 18
+    }
+  ],
   "products": [
     {
       "sku": "MYSHOES",
       "name": "My shoes",
       "category": "Durable",
-      "amountAvailable": 3,
+      "amountAvailable": 2,
       "price": 109.99,
       "description": "Black Running Shoes"
     },
@@ -35,32 +47,32 @@
   ],
   "users": [
     {
-      "id": 1,
+      "sku": 1,
       "firstName": "Anna",
       "lastName": "Borisova"
     },
     {
-      "id": 2,
+      "sku": 2,
       "firstName": "Boris",
       "lastName": "Vlasov"
     },
     {
-      "id": 3,
+      "sku": 3,
       "firstName": "Clara",
       "lastName": "Dmitrieva"
     },
     {
-      "id": 4,
+      "sku": 4,
       "firstName": "Dariya",
       "lastName": "Egorova"
     },
     {
-      "id": 5,
+      "sku": 5,
       "firstName": "Fatima",
       "lastName": "Georg"
     },
     {
-      "id": 6,
+      "sku": 6,
       "firstName": "Hunna",
       "lastName": "Jackson"
     }

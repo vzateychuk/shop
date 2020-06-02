@@ -2,15 +2,14 @@ import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { UsersAPI } from '../users.config';
 import { Observable, throwError } from 'rxjs';
-import { retry, publish, refCount, catchError } from 'rxjs/operators';
+import { retry, publish, refCount, catchError, delay } from 'rxjs/operators';
 
 import { UserModel } from '../models';
-import { UsersServiceModule } from '../users.service.module';
 
 @Injectable({
-  providedIn: UsersServiceModule
+  providedIn: 'any'
 })
-export class UsersService {
+export class UserService {
 
   constructor(
     private http: HttpClient,
@@ -21,14 +20,24 @@ export class UsersService {
     return this.http
       .get<UserModel[]>(this.usersUrl)
       .pipe(
-        retry(3),
         publish(),
         refCount(),
         catchError(this.handleError)
       );
    }
 
-  getUser(id: number) {}
+  getUser(id: number | string) {
+    const url = `${this.usersUrl}/${id}`;
+
+    return this.http
+      .get(url)
+      .pipe(
+        delay(1000),
+        publish(),
+        refCount(),
+        catchError(this.handleError)
+      );
+  }
 
   updateUser(user: UserModel) {}
 

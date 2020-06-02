@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Product, ProductModel, Category } from 'src/app/shared';
-import { ActivatedRoute, Router, Params, ParamMap } from '@angular/router';
+import { ActivatedRoute, Router, Params, ParamMap, UrlTree } from '@angular/router';
 // rxjs
 import { Observable, Subscription } from 'rxjs';
 import {
@@ -13,15 +13,17 @@ import {
 } from 'src/app/core/@ngrx';
 import { Store, select } from '@ngrx/store';
 import { error } from 'protractor';
+import { CanComponentDeactivate, DialogService } from 'src/app/core';
 
 @Component({
   selector: 'epa-product-edit',
   templateUrl: './product-edit.component.html',
   styleUrls: ['./product-edit.component.css']
 })
-export class ProductEditComponent implements OnInit, OnDestroy {
+export class ProductEditComponent implements OnInit, OnDestroy, CanComponentDeactivate {
 
   product: Product;
+  original: Product;
   productState$: Observable<ProductsState>;
   private sub: Subscription;
   private editMode = false;
@@ -29,7 +31,8 @@ export class ProductEditComponent implements OnInit, OnDestroy {
   constructor(
     private rounter: Router,
     private route: ActivatedRoute,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private dialogService: DialogService
   ) { }
 
   ngOnInit(): void {
@@ -42,6 +45,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
         } else {
           this.product = new ProductModel();
         }
+        this.original = {...this.product};
       },
       error(err) {
         console.log(err);
@@ -71,6 +75,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
 
   onSaveProduct() {
     const product = { ...this.product };
+    this.original = {...this.product};
 
     if (this.editMode) {
       this.store.dispatch(UpdateProductAction({product}));
@@ -83,4 +88,28 @@ export class ProductEditComponent implements OnInit, OnDestroy {
   onGoBack() {
     this.rounter.navigate(['/products']);
   }
+
+    // вызывается когда пользователь пробует уйти с формы
+  canDeactivate():
+    | Observable<boolean | UrlTree>
+    | Promise<boolean | UrlTree>
+    | boolean
+    | UrlTree {
+    const flags = Object.keys(this.original).map(key => {
+        if (this.original[key] === this.product[key]) {
+          return true;
+        } else {
+          return false;
+        }
+    });
+
+    if (flags.every(el => el)) {
+        return true;
+    }
+
+      // Ask the user with the dialog service and return its
+      // promise which resolves to true or false when the user decides
+    return this.dialogService.confirm('Discard changes?');
+  }
+
 }

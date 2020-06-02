@@ -1,19 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UsersServiceModule } from './users.service.module';
-import { SharedModule } from '../shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { UsersAPIProvider } from './users.config';
-
+import { UserComponent } from './components';
+import { UsersRoutingModule } from './users-routing.module';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    UserComponent,
+    UsersRoutingModule.components
+  ],
   imports: [
     CommonModule,
     FormsModule,
-    SharedModule,
-    UsersServiceModule
+    UsersRoutingModule
   ],
   providers: [
     UsersAPIProvider

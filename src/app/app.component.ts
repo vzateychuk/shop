@@ -1,4 +1,5 @@
-import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { SpinnerService } from './widgets';
 
 @Component({
   // tslint:disable-next-line: component-selector
@@ -6,10 +7,9 @@ import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements AfterViewInit {
-  @ViewChild('appTitle') titleTag: ElementRef<HTMLInputElement>;
+export class AppComponent {
 
-  ngAfterViewInit(): void {
-    this.titleTag.nativeElement.innerHTML = 'My Shop application';
-  }
+  constructor(
+    public spinnerService: SpinnerService
+  ) { }
 }

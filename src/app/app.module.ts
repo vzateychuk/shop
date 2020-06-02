@@ -20,6 +20,9 @@ import { environment } from 'src/environments/environment';
 
 // Routing
 import { AppRoutingModule } from './app-routing.module';
+import { AdminModule } from './admin/admin.module';
+import { LayoutModule } from './layout/layout.module';
+import { SpinnerModule } from './widgets/spinner/spinner.module';
 
 @NgModule({
   declarations: [
@@ -27,11 +30,12 @@ import { AppRoutingModule } from './app-routing.module';
   ],
   imports: [
     !environment.production ? StoreDevtoolsModule.instrument() : [],
+    SpinnerModule.forRoot(),
     BrowserModule,
     HttpClientModule,
+    LayoutModule,
     CartModule,
     ProductsModule,
-    UsersModule,
     SharedModule,
     RootStoreModule,
     AppRoutingModule

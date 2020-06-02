@@ -1,11 +1,7 @@
-<h1>Product list:</h1>
-
 <button class = 'btn btn-outline-primary'
     (click)='onCreateProduct($event)'>
     +New Product
 </button>
-<br/>
-<br/>
 
 <p *ngIf="(productsState$ | async).error as error">{{error}}</p>
 
