@@ -1,19 +1,8 @@
 <h1>Cart:</h1>
-<div *ngIf="cartState$; else emptyCartBlock">
-    <button class = 'btn btn-outline-danger'
-        (click)='onDeleteAll()'>
-        Delete All
-    </button>
-    <br/>
-    <br/>
+<button class='btn btn-outline-danger' (click)='onDeleteAll()'>
+    Delete All
+</button>
 
-    <epa-cart-view *ngFor="let item of (cartState$ | async).data"
-        [cartItem]="item"
-        (deleteItem)="onDeleteItem($event)" epaHost>
-    </epa-cart-view>
-</div>
-
-<ng-template #emptyCartBlock>
-    Cart is empty.
-    Please add some products into the card.
-</ng-template>
+<epa-cart-view *ngFor="let item of (cartItem$ | async)" 
+    [cartItem]="item" (deleteItem)="onDeleteItem($event)" epaHost>
+</epa-cart-view>

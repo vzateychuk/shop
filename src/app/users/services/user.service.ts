@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { UsersAPI } from '../users.config';
 import { Observable, throwError } from 'rxjs';
-import { retry, publish, refCount, catchError, delay } from 'rxjs/operators';
+import { publish, refCount, catchError, delay } from 'rxjs/operators';
 
 import { UserModel } from '../models';
 
@@ -26,7 +26,7 @@ export class UserService {
       );
    }
 
-  getUser(id: number | string) {
+  getUser(id: number | string): Observable<UserModel> {
     const url = `${this.usersUrl}/${id}`;
 
     return this.http

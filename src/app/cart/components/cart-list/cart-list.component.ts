@@ -3,7 +3,13 @@ import { CartItemModel, CartItem } from '../../models';
 import { Observable } from 'rxjs';
 import { AppState } from 'src/app/core/@ngrx';
 import { Store, select } from '@ngrx/store';
-import { CartState, cartStateSelector, DeleteCartItemAction, DeleteAllCartItemsAction } from 'src/app/core/@ngrx/cart';
+import {
+  CartState,
+  cartStateSelector,
+  DeleteCartItemAction,
+  DeleteAllCartAction,
+  selectCartData
+} from 'src/app/core/@ngrx/cart';
 
 @Component({
   selector: 'epa-cart-list',
@@ -11,15 +17,15 @@ import { CartState, cartStateSelector, DeleteCartItemAction, DeleteAllCartItemsA
   styleUrls: ['./cart-list.component.css']
 })
 export class CartListComponent implements OnInit {
-  cartState$: Observable<CartState>;
-  cartItems$: Observable<Array<CartItemModel>>;
+  // cartState$: Observable<CartState>;
+  cartItem$: Observable<ReadonlyArray<CartItem>>;
 
   constructor(
     private store: Store<AppState>
   ) { }
 
   ngOnInit(): void {
-    this.cartState$ = this.store.pipe(select(cartStateSelector));
+    this.cartItem$ = this.store.pipe(select(selectCartData));
   }
 
   onDeleteItem(item: CartItemModel) {
@@ -28,7 +34,7 @@ export class CartListComponent implements OnInit {
   }
 
   onDeleteAll() {
-    this.store.dispatch( DeleteAllCartItemsAction() );
+    this.store.dispatch( DeleteAllCartAction() );
   }
 
 }

@@ -3,10 +3,10 @@
     +New Product
 </button>
 
-<p *ngIf="(productsState$ | async).error as error">{{error}}</p>
+<p *ngIf="productError$ | async as error">{{error}}</p>
 
 <epa-product-view
-    *ngFor='let product of (productsState$ | async).data'
+    *ngFor='let product of productList$ | async'
     [product]='product'
     (addToCart)='onAddToCart($event)'
     (editProduct)='onEditProduct($event)'

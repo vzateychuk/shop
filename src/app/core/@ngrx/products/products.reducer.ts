@@ -1,35 +1,35 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import { initialProductsState, ProductsState } from './products.state';
 import {
-  LoadProductsAction,
-  LoadProductsSuccess,
-  LoadProductsError,
+  LoadProductListAction,
+  LoadProductListSuccess,
+  LoadProductListError,
   LoadProductAction,
   LoadProductSuccess,
   LoadProductError,
   CreateProductAction,
   CreateProductSuccess,
-  CreateProductsError,
+  CreateProductError,
   UpdateProductAction,
-  UpdateProductsError,
+  UpdateProductError,
   UpdateProductSuccess,
   DeleteProductAction,
   DeleteProductSuccess,
   DeleteProductsError,
-  AddToCartAction,
-  AddToCartSuccess,
-  AddToCartError
+  AddToCartProductAction,
+  AddToCartProductSuccess,
+  AddToCartProductError
 } from './products.actions';
 import { ProductModel, Product } from 'src/app/shared';
 
 export const productsFeatureKey = 'products';
 
-export const reducer = createReducer(
+const reducer = createReducer(
   initialProductsState,
-  on(LoadProductsAction, state => {
+  on(LoadProductListAction, state => {
     return { ...state, loading: true };
   }),
-  on(LoadProductsSuccess, (state, {products}) => {
+  on(LoadProductListSuccess, (state, {products}) => {
     const data = [...products];
     return {...state, data, loading: false, loaded: true, selectedProduct: null};
   }),
@@ -70,10 +70,10 @@ export const reducer = createReducer(
     return {...state, data, loading: false, loaded: true};
   }),
 
-  on(AddToCartAction, state => {
+  on(AddToCartProductAction, state => {
     return {...state, loading: true};
   }),
-  on(AddToCartSuccess, (state, {product}) => {
+  on(AddToCartProductSuccess, (state, {product}) => {
     const data = state.data.map(p => {
         if (p.sku === product.sku) {
           return {...product, amountAvailable: (p.amountAvailable - 1) };
@@ -88,14 +88,14 @@ export const reducer = createReducer(
 
   // error handler
   on(
-    LoadProductsError,
+    LoadProductListError,
     LoadProductError,
-    UpdateProductsError,
-    CreateProductsError,
+    UpdateProductError,
+    CreateProductError,
     DeleteProductsError,
-    AddToCartError,
+    AddToCartProductError,
     (state, {error}) => {
-      console.log('ErrorHandler invoked');
+      console.log('Products ErrorHandler invoked');
       return {...state, error, loading: false, loaded: false};
   })
 

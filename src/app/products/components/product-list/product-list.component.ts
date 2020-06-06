@@ -1,14 +1,17 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Product } from 'src/app/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 // @ngrx
 import {
   AppState,
   ProductsState,
-  AddToCartAction,
-  LoadProductsAction,
+  AddToCartProductAction,
+  LoadProductListAction,
   DeleteProductAction,
-  productsStateSelector
+  productsStateSelector,
+  AddCartItemAction,
+  selectProductsData,
+  selectProductsStateError
 } from 'src/app/core/@ngrx';
 import { Store, select } from '@ngrx/store';
 // rxjs
@@ -20,7 +23,9 @@ import { Observable } from 'rxjs';
   styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent implements OnInit {
-  productsState$: Observable<ProductsState>;
+  // productsState$: Observable<ProductsState>;
+  productList$: Observable<ReadonlyArray<Product>>;
+  productError$: Observable<string | Error>;
 
   constructor(
     private router: Router,
@@ -30,13 +35,15 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit(): void {
     // Subscribe for the data
-    this.productsState$ = this.store.pipe( select(productsStateSelector) );
+    this.productList$ = this.store.pipe( select(selectProductsData) );
+    this.productError$ = this.store.pipe( select(selectProductsStateError) );
     // Initiate dataflow
-    this.store.dispatch( LoadProductsAction() );
+    this.store.dispatch( LoadProductListAction() );
   }
 
-  onAddToCart(productToBuy: Product) {
-    this.store.dispatch(AddToCartAction( {product: productToBuy}) );
+  onAddToCart(addToCartProduct: Product) {
+    this.store.dispatch( AddToCartProductAction( {product: addToCartProduct}) );
+    this.store.dispatch( AddCartItemAction( {product: addToCartProduct}) );
   }
 
   onEditProduct(product: Product) {

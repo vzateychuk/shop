@@ -1,22 +1,10 @@
 {
-  "cart": [
-    {
-      "sku": "MYSHOES",
-      "price": 111,
-      "amount": 56
-    },
-    {
-      "sku": "PANTS",
-      "price": 27.4,
-      "amount": 18
-    }
-  ],
   "products": [
     {
       "sku": "MYSHOES",
       "name": "My shoes",
       "category": "Durable",
-      "amountAvailable": 2,
+      "amountAvailable": 42,
       "price": 109.99,
       "description": "Black Running Shoes"
     },
@@ -24,7 +12,7 @@
       "sku": "PANTS",
       "name": "My beautiful pants",
       "category": "Durable",
-      "amountAvailable": 4,
+      "amountAvailable": 410,
       "price": 117.99,
       "description": "Attractive pants"
     },
@@ -32,7 +20,7 @@
       "sku": "NICEHAT",
       "name": "A Nice Black Hat",
       "category": "Nondurable",
-      "amountAvailable": 3,
+      "amountAvailable": 212,
       "price": 29.99,
       "description": "Just a funny hat"
     },
@@ -40,7 +28,7 @@
       "sku": "GLOWES",
       "name": "Funny glowes",
       "category": "DURABLE",
-      "amountAvailable": 7,
+      "amountAvailable": 700,
       "price": 18.95,
       "description": "Just a funny glowes"
     }

@@ -5,24 +5,24 @@ import { ProductService } from 'src/app/products/services/product.service';
 import { Observable } from 'rxjs';
 import { switchMap, pluck, concatMap } from 'rxjs/operators';
 import {
-  LoadProductsAction,
-  LoadProductsSuccess,
-  LoadProductsError,
+  LoadProductListAction,
+  LoadProductListSuccess,
+  LoadProductListError,
   LoadProductAction,
   LoadProductSuccess,
   LoadProductError,
   UpdateProductAction,
   UpdateProductSuccess,
-  UpdateProductsError,
+  UpdateProductError,
   CreateProductAction,
   CreateProductSuccess,
-  CreateProductsError,
+  CreateProductError,
   DeleteProductAction,
   DeleteProductSuccess,
   DeleteProductsError,
-  AddToCartAction,
-  AddToCartSuccess,
-  AddToCartError
+  AddToCartProductAction,
+  AddToCartProductSuccess,
+  AddToCartProductError
 } from './products.actions';
 import { AppState } from '..';
 
@@ -37,11 +37,11 @@ export class  ProductsEffects {
 
   loadProducts$: Observable<Action> = createEffect( () =>
     this.actions$.pipe(
-      ofType(LoadProductsAction),
+      ofType(LoadProductListAction),
       switchMap( action =>
         this.productService.getProducts()
-          .then(products => LoadProductsSuccess({products}))
-          .catch(err => LoadProductsError(err))
+          .then(products => LoadProductListSuccess({products}))
+          .catch(err => LoadProductListError(err))
       )
     )
   );
@@ -65,7 +65,7 @@ export class  ProductsEffects {
       concatMap( product =>
         this.productService.updateProduct(product)
           .then( updated => UpdateProductSuccess({product: updated}) )
-          .catch( err => UpdateProductsError(err) )
+          .catch( err => UpdateProductError(err) )
         )
     )
   );
@@ -77,7 +77,7 @@ export class  ProductsEffects {
       concatMap( product =>
         this.productService.createProduct(product)
           .then( created => CreateProductSuccess({product: created}) )
-          .catch( err => CreateProductsError(err) )
+          .catch( err => CreateProductError(err) )
         )
     )
   );
@@ -96,12 +96,12 @@ export class  ProductsEffects {
 
   addToCartProduct$: Observable<Action> = createEffect( () =>
     this.actions$.pipe(
-      ofType(AddToCartAction),
+      ofType(AddToCartProductAction),
       pluck('product'),
       concatMap(prod =>
         this.productService.addToCard(prod, 1)
-        .then(resp => AddToCartSuccess({product: resp}))
-        .catch(err => AddToCartError(err))
+        .then(response => AddToCartProductSuccess({product: response}))
+        .catch(err => AddToCartProductError(err))
       )
     )
   );

@@ -4,29 +4,51 @@ import { Product } from 'src/app/shared';
 
 // In case of Actions: LoadCard, AddToCard no interaction with backend, so we use Store as cache
 export const LoadCartItemsAction = createAction(
-  '[LOAD_CART_ITEMS_ACTION]'
+  '[CART] LOAD_CART_ITEMS'
 );
+// export const LoadCartItemsSuccess = createAction(
+//   '[CART] LOAD_CART_ITEMS_SUCCEESS',
+//   props<{ items: CartItem[] }>()
+// );
+// export const LoadCartItemsError = createAction(
+//   '[CART] LOAD_CART_ITEMS_ERROR',
+//   props<{ error: Error | string }>()
+// );
+
 export const AddCartItemAction = createAction(
-  '[ADD_CART_ITEM_ACTION]',
+  '[CART] ADD_CART_ITEM',
   props<{ product: Product }>()
 );
+// export const AddCartItemsSuccess = createAction(
+//   '[CART] ADD_CART_ITEM_SUCCEESS',
+//   props<{ item: CartItem }>()
+// );
+// export const AddCartItemsError = createAction(
+//   '[CART] ADD_CART_ITEM_ERROR',
+//   props<{ error: Error | string }>()
+// );
+
 export const DeleteCartItemAction = createAction(
-  '[DELETE_CART_ITEM_ACTION]',
+  '[CART] DELETE_CART_ITEM',
   props<{ item: CartItem }>()
 );
-export const DeleteAllCartItemsAction = createAction(
-  '[DELETE_ALL_CART_ITEMS_ACTION]'
-);
+// export const DeleteCartItemsSuccess = createAction(
+//   '[CART] DELETE_CART_ITEM_SUCCEESS',
+//   props<{ item: CartItem }>()
+// );
+// export const DeleteCartItemsError = createAction(
+//   '[CART] DELETE_CART_ITEM_ERROR',
+//   props<{ error: Error | string }>()
+// );
 
-// An order requires backend communication, so the Effects will be used
-export const OrderCartAction = createAction(
-  '[ORDER_CART_ACTION]'
+export const DeleteAllCartAction = createAction(
+  '[CART] DELETE_ALL_CART'
 );
-export const OrderCartSuccess = createAction(
-  '[ORDER_CART_SUCCESS]',
-  props<{ item: CartItem[] }>()
-);
-export const OrderCartsError = createAction(
-  '[ORDER_CART_ERROR]',
-  props<{ error: Error | string }>()
-);
+// export const DeleteAllCartSuccess = createAction(
+//   '[CART] DELETE_ALL_CART_SUCCEESS',
+//   props<{ item: CartItem }>()
+// );
+// export const DeleteAllCartError = createAction(
+//   '[CART] DELETE_ALL_CART_ERROR',
+//   props<{ error: Error | string }>()
+// );

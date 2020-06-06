@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Product } from 'src/app/shared';
 import { ProductsServiceModule } from '../products-service.module';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { delay } from 'rxjs/operators';
 
 @Injectable({
   providedIn: ProductsServiceModule
@@ -24,10 +25,12 @@ export class ProductService {
   }
 
   public getProduct(sku: string): Promise<Product> {
+    console.log(`productService.getProduct(), sku=${sku}`);
     const productUrl = `${this.baseUrl}/${sku}`;
 
     return this.http
       .get(productUrl)
+      .pipe( delay(3000) )
       .toPromise()
       .then(resp => resp as Product)
       .catch(this.errorHandler);
@@ -39,6 +42,7 @@ export class ProductService {
 
     return this.http
       .put(productUrl, body, this.options)
+      .pipe( delay(1000) )
       .toPromise()
       .then(resp => resp as Product)
       .catch(this.errorHandler);
@@ -49,6 +53,7 @@ export class ProductService {
 
     return this.http
       .post(this.baseUrl, body, this.options)
+      .pipe( delay(1000) )
       .toPromise()
       .then(resp => resp as Product)
       .catch(this.errorHandler);

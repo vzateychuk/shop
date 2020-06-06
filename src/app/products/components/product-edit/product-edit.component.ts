@@ -9,11 +9,13 @@ import {
   LoadProductAction,
   UpdateProductAction,
   CreateProductAction,
-  productsStateSelector
+  productsStateSelector,
+  selectSelectedProduct
 } from 'src/app/core/@ngrx';
 import { Store, select } from '@ngrx/store';
 import { error } from 'protractor';
 import { CanComponentDeactivate, DialogService } from 'src/app/core';
+import { pluck } from 'rxjs/operators';
 
 @Component({
   selector: 'epa-product-edit',
@@ -22,9 +24,10 @@ import { CanComponentDeactivate, DialogService } from 'src/app/core';
 })
 export class ProductEditComponent implements OnInit, OnDestroy, CanComponentDeactivate {
 
+  selectedProduct$: Observable<Product>;
   product: Product;
   original: Product;
-  productState$: Observable<ProductsState>;
+
   private sub: Subscription;
   private editMode = false;
 
@@ -36,12 +39,13 @@ export class ProductEditComponent implements OnInit, OnDestroy, CanComponentDeac
   ) { }
 
   ngOnInit(): void {
-    this.productState$ = this.store.pipe( select(productsStateSelector) );
+    this.selectedProduct$ = this.route.data.pipe( pluck('product') );
+
     const observer = {
-      next: state => {
-        if (state.selectedProduct) {
+      next: product => {
+        if (product) {
           this.editMode = true;
-          this.product = {...state.selectedProduct};
+          this.product = {...product};
         } else {
           this.product = new ProductModel();
         }
@@ -54,19 +58,7 @@ export class ProductEditComponent implements OnInit, OnDestroy, CanComponentDeac
         console.log('ProductEdit Stream is completed');
       }
     };
-    this.sub = this.productState$.subscribe(observer);
-
-    const productObserver = {
-      next: (params: ParamMap) => {
-        const skuParam = params.get('sku');
-        // If there is SKU we extracted from params, we fire LOAD_PRODUCT_ACTION
-        if (skuParam) {
-          this.store.dispatch(LoadProductAction({sku: skuParam}));
-        }
-      }
-    };
-
-    this.route.paramMap.subscribe(productObserver);
+    this.sub = this.selectedProduct$.subscribe(observer);
   }
 
   ngOnDestroy(): void {

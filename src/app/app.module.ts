@@ -8,7 +8,6 @@ import { Router } from '@angular/router';
 import { AppComponent } from './app.component';
 import { CartModule } from './cart/cart.module';
 import { ProductsModule } from './products/products.module';
-import { UsersModule } from './users/users.module';
 import { SharedModule } from './shared/shared.module';
 
 // Store
@@ -20,7 +19,6 @@ import { environment } from 'src/environments/environment';
 
 // Routing
 import { AppRoutingModule } from './app-routing.module';
-import { AdminModule } from './admin/admin.module';
 import { LayoutModule } from './layout/layout.module';
 import { SpinnerModule } from './widgets/spinner/spinner.module';
 

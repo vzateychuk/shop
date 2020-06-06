@@ -1,54 +1,54 @@
 import { createAction, props } from '@ngrx/store';
 import { Product } from 'src/app/shared';
 
-export const LoadProductsAction = createAction(
-  '[LOAD_PRODUCTS_ACTION]'
+export const LoadProductListAction = createAction(
+  '[PRODUCTS] LOAD_LIST'
 );
-export const LoadProductsSuccess = createAction(
-  '[LOAD_PRODUCTS_SUCCEESS]',
+export const LoadProductListSuccess = createAction(
+  '[PRODUCTS] LOAD_LIST_SUCCEESS',
   props<{ products: Product[] }>()
 );
-export const LoadProductsError = createAction(
-  '[LOAD_PRODUCTS_ERROR]',
+export const LoadProductListError = createAction(
+  '[PRODUCTS] LOAD_LIST_ERROR',
   props<{ error: Error | string }>()
 );
 
 export const LoadProductAction = createAction(
-  '[LOAD_PRODUCT_ACTION]',
+  '[PRODUCTS] LOAD_PRODUCT',
   props<{ sku: string }>()
 );
 export const LoadProductSuccess = createAction(
-  '[LOAD_PRODUCT_SUCCEESS]',
+  '[PRODUCTS] LOAD_PRODUCT_SUCCEESS',
   props<{ product: Product }>()
 );
 export const LoadProductError = createAction(
-  '[LOAD_PRODUCT_ERROR]',
+  '[PRODUCTS] LOAD_PRODUCT_ERROR',
   props<{ error: Error | string }>()
 );
 
 export const UpdateProductAction = createAction(
-  '[UPDATE_PRODUCT_ACTION]',
+  '[PRODUCTS] UPDATE_PRODUCT',
   props<{ product: Product }>()
 );
 export const UpdateProductSuccess = createAction(
-  '[UPDATE_PRODUCT_SUCCEESS]',
+  '[PRODUCTS] UPDATE_PRODUCT_SUCCEESS',
   props<{ product: Product }>()
 );
-export const UpdateProductsError = createAction(
-  '[UPDATE_PRODUCTS_ERROR]',
+export const UpdateProductError = createAction(
+  '[PRODUCTS] UPDATE_PRODUCT_ERROR',
   props<{ error: Error | string }>()
 );
 
 export const CreateProductAction = createAction(
-  '[CREATE_PRODUCT_ACTION]',
+  '[PRODUCTS] CREATE_PRODUCT',
   props<{ product: Product }>()
 );
 export const CreateProductSuccess = createAction(
-  '[CREATE_PRODUCT_SUCCEESS]',
+  '[PRODUCTS] CREATE_PRODUCT_SUCCEESS',
   props<{ product: Product }>()
 );
-export const CreateProductsError = createAction(
-  '[CREATE_PRODUCT_ERROR]',
+export const CreateProductError = createAction(
+  '[PRODUCTS] CREATE_PRODUCT_ERROR',
   props<{ error: Error | string }>()
 );
 
@@ -65,15 +65,15 @@ export const DeleteProductsError = createAction(
   props<{ error: Error | string }>()
 );
 
-export const AddToCartAction = createAction(
-  '[PRODUCT_ADD_TO_CART_ACTION]',
+export const AddToCartProductAction = createAction(
+  '[PRODUCTS] ADD_TO_CART_ACTION',
   props<{ product: Product }>()
 );
-export const AddToCartSuccess = createAction(
-  '[PRODUCT_ADD_TO_CART_SUCCEESS]',
+export const AddToCartProductSuccess = createAction(
+  '[PRODUCTS] ADD_TO_CART_SUCCEESS',
   props<{ product: Product }>()
 );
-export const AddToCartError = createAction(
-  '[PRODUCT_ADD_TO_CART_ERROR]',
+export const AddToCartProductError = createAction(
+  '[PRODUCTS] ADD_TO_CART_ERROR',
   props<{ error: Error | string }>()
 );
