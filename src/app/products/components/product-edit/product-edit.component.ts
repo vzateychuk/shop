@@ -1,21 +1,18 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { Product, ProductModel, Category } from 'src/app/shared';
-import { ActivatedRoute, Router, Params, ParamMap, UrlTree } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Product, ProductModel, } from 'src/app/shared';
+import { ActivatedRoute, Router, UrlTree } from '@angular/router';
 // rxjs
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, Subject } from 'rxjs';
 import {
   AppState,
-  ProductsState,
-  LoadProductAction,
   UpdateProductAction,
   CreateProductAction,
-  productsStateSelector,
-  selectSelectedProduct
+  getProductByUrl
 } from 'src/app/core/@ngrx';
 import { Store, select } from '@ngrx/store';
 import { error } from 'protractor';
 import { CanComponentDeactivate, DialogService } from 'src/app/core';
-import { pluck } from 'rxjs/operators';
+import { pluck, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'epa-product-edit',
@@ -24,55 +21,48 @@ import { pluck } from 'rxjs/operators';
 })
 export class ProductEditComponent implements OnInit, OnDestroy, CanComponentDeactivate {
 
-  selectedProduct$: Observable<Product>;
+//  selectedProduct$: Observable<Product>;
   product: Product;
   original: Product;
-
-  private sub: Subscription;
   private editMode = false;
+  private componentDestroyed$: Subject<void> = new Subject<void>();
 
   constructor(
     private rounter: Router,
-    private route: ActivatedRoute,
     private store: Store<AppState>,
     private dialogService: DialogService
   ) { }
 
   ngOnInit(): void {
-    this.selectedProduct$ = this.route.data.pipe( pluck('product') );
-
-    const observer = {
-      next: product => {
-        if (product) {
-          this.editMode = true;
-          this.product = {...product};
-        } else {
-          this.product = new ProductModel();
-        }
-        this.original = {...this.product};
+    const observer: any = {
+      next: prd => {
+        this.editMode = true;
+        this.product = {...prd};
+        this.original = {...prd};
       },
-      error(err) {
-        console.log(err);
-      },
-      complete() {
-        console.log('ProductEdit Stream is completed');
-      }
+      error(err) { console.log(err); },
+      complete() { console.log('ProductEdit Stream is completed'); }
     };
-    this.sub = this.selectedProduct$.subscribe(observer);
+
+    this.store.pipe(
+      select( getProductByUrl),
+      takeUntil(this.componentDestroyed$)
+    ).subscribe(observer);
   }
 
   ngOnDestroy(): void {
-    this.sub.unsubscribe();
+    this.componentDestroyed$.next();
+    this.componentDestroyed$.complete();
   }
 
   onSaveProduct() {
-    const product = { ...this.product };
+    this.product = { ...this.product };
     this.original = {...this.product};
 
     if (this.editMode) {
-      this.store.dispatch(UpdateProductAction({product}));
+      this.store.dispatch(UpdateProductAction({product: this.product}));
     } else {
-      this.store.dispatch(CreateProductAction({product}));
+      this.store.dispatch(CreateProductAction({product: this.product}));
     }
     this.onGoBack();
   }

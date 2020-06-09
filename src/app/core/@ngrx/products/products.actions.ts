@@ -13,19 +13,6 @@ export const LoadProductListError = createAction(
   props<{ error: Error | string }>()
 );
 
-export const LoadProductAction = createAction(
-  '[PRODUCTS] LOAD_PRODUCT',
-  props<{ sku: string }>()
-);
-export const LoadProductSuccess = createAction(
-  '[PRODUCTS] LOAD_PRODUCT_SUCCEESS',
-  props<{ product: Product }>()
-);
-export const LoadProductError = createAction(
-  '[PRODUCTS] LOAD_PRODUCT_ERROR',
-  props<{ error: Error | string }>()
-);
-
 export const UpdateProductAction = createAction(
   '[PRODUCTS] UPDATE_PRODUCT',
   props<{ product: Product }>()

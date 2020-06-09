@@ -1,50 +1,60 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 // rxjs
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+// NgRx
+import { Store, select } from '@ngrx/store';
+import * as UsersActions from './../../../core/@ngrx/users/users.actions';
+import { AppState, selectUsers, selectUsersError, selectEditedUser } from './../../../core/@ngrx';
+import * as RouterActions from '../../../core/@ngrx/router/router.actions';
 
-import { UserModel } from './../../models/user.model';
-import { UserService } from '../../services/user.service';
-import { switchMap } from 'rxjs/operators';
+import { UserModel, User } from './../../models/user.model';
 
 @Component({
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.css']
 })
-export class UserListComponent implements OnInit {
+export class UserListComponent implements OnInit, OnDestroy {
   users$: Observable<Array<UserModel>>;
+  usersError$: Observable<Error | string>;
+  private subscription: Subscription;
+
   private editedUser: UserModel;
 
   constructor(
-    private userService: UserService,
-    private router: Router,
-    private route: ActivatedRoute
+    private store: Store<AppState>,
+    private router: Router
   ) { }
 
   ngOnInit() {
-    this.users$ = this.userService.getUsers();
+    this.users$ = this.store.pipe( select(selectUsers) );
+    this.usersError$ = this.store.pipe( select(selectUsersError) );
+    this.store.dispatch( UsersActions.loadUsers() );
 
-    const observer = {
-      next: (user: UserModel) => {
+    this.subscription = this.store.pipe(select(selectEditedUser)).subscribe({
+      next: user => {
         this.editedUser = { ...user };
-        console.log( `Last time you edited user ${JSON.stringify(this.editedUser)}`);
+        console.log(
+          `Last time you edited user ${JSON.stringify(this.editedUser)}`
+        );
       },
-      error: (err: any) => console.log(err)
-    };
-    this.route.paramMap
-      .pipe(
-        switchMap((params: ParamMap) => this.userService.getUser(+params.get('editedUserID')))
-      )
-      .subscribe(observer);
+      error: err => console.log(err)
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   onEditUser(user: UserModel) {
-    const link = ['edit', user.sku];
-    this.router.navigate(link, {relativeTo: this.route});
+    // const link = ['edit', user.sku];
+    // this.router.navigate(link, {relativeTo: this.route});
     // or
-    // const link = ['/users/edit', user.sku];
-    // this.router.navigate(link);
+    const link = ['/users/edit', user.sku];
+    this.router.navigate(link);
+    // or
+    // const link = ['/edit', user.sku];
+    // this.store.dispatch( RouterActions.go({ path: [link] }));
   }
 
   isEdited(user: UserModel): boolean {
@@ -52,5 +62,10 @@ export class UserListComponent implements OnInit {
       return user.sku === this.editedUser.sku;
     }
     return false;
-}
+  }
+
+  onDeleteUser(user: UserModel) {
+    const userToDelete: User = { ...user };
+    this.store.dispatch(UsersActions.deleteUser({ user: userToDelete }));
+  }
 }

@@ -13,10 +13,6 @@ import { SharedModule } from './shared/shared.module';
 // Store
 import { RootStoreModule } from './core/@ngrx/root-store.module';
 
-// Store DevTools
-import {StoreDevtoolsModule} from '@ngrx/store-devtools';
-import { environment } from 'src/environments/environment';
-
 // Routing
 import { AppRoutingModule } from './app-routing.module';
 import { LayoutModule } from './layout/layout.module';
@@ -27,7 +23,6 @@ import { SpinnerModule } from './widgets/spinner/spinner.module';
     AppComponent
   ],
   imports: [
-    !environment.production ? StoreDevtoolsModule.instrument() : [],
     SpinnerModule.forRoot(),
     BrowserModule,
     HttpClientModule,

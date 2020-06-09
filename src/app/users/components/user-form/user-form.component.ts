@@ -1,13 +1,17 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import {Location} from '@angular/common';
 import { ActivatedRoute, Router, UrlTree } from '@angular/router';
 
 // rxjs
-import { Subscription, Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+// @Ngrx
+import { Store, select } from '@ngrx/store';
+import { AppState, selectUsersOriginalUser } from './../../../core/@ngrx';
+import * as UsersActions from './../../../core/@ngrx/users/users.actions';
 
-import { UserModel } from './../../models/user.model';
-import { UserService } from '../../services';
+import { UserModel, User } from './../../models/user.model';
 import { CanComponentDeactivate, DialogService } from 'src/app/core';
-import { pluck } from 'rxjs/operators';
+import { pluck, switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './user-form.component.html',
@@ -15,13 +19,12 @@ import { pluck } from 'rxjs/operators';
 })
 export class UserFormComponent implements OnInit, CanComponentDeactivate {
   user: UserModel;
-  originalUser: UserModel;
 
   constructor(
-    private userService: UserService,
     private route: ActivatedRoute,
-    private router: Router,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private location: Location,
+    private store: Store<AppState>
   ) { }
 
   ngOnInit(): void {
@@ -29,25 +32,21 @@ export class UserFormComponent implements OnInit, CanComponentDeactivate {
       pluck('user')
     ).subscribe((user: UserModel) => {
       this.user = { ...user };
-      this.originalUser = { ...user };
     });
   }
 
   onSaveUser() {
-    const user = {...this.user};
+    const user = {...this.user} as User;
 
     if (user.sku) {
-      this.userService.updateUser(user);
-      this.router.navigate(['/users', {editedUserID: user.sku}]);
+      this.store.dispatch(UsersActions.updateUser({ user }));
     } else {
-      this.userService.createUser(user);
-      this.onGoBack();
+      this.store.dispatch(UsersActions.createUser({ user }));
     }
-    this.originalUser = {...this.user};
   }
 
   onGoBack() {
-    this.router.navigate(['./../../'], { relativeTo: this.route});
+    this.location.back();
   }
 
   // вызывается когда пользователь пробует уйти с формы
@@ -56,21 +55,43 @@ export class UserFormComponent implements OnInit, CanComponentDeactivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    const flags = Object.keys(this.originalUser).map(key => {
-      if (this.originalUser[key] === this.user[key]) {
-        return true;
-      } else {
-        return false;
-      }
-    });
+    // const flags = Object.keys(this.originalUser).map(key => {
+    //   if (this.originalUser[key] === this.user[key]) {
+    //     return true;
+    //   } else {
+    //     return false;
+    //   }
+    // });
 
-    if (flags.every(el => el)) {
-      return true;
-    }
+    // if (flags.every(el => el)) {
+    //   return true;
+    // }
 
-    // Otherwise ask the user with the dialog service and return its
-    // promise which resolves to true or false when the user decides
-    return this.dialogService.confirm('Discard changes?');
+    // // Otherwise ask the user with the dialog service and return its
+    // // promise which resolves to true or false when the user decides
+    // return this.dialogService.confirm('Discard changes?');
+    const flags = [];
+
+    return this.store.pipe(
+      select(selectUsersOriginalUser),
+      switchMap(originalUser => {
+        for (const key in originalUser) {
+          if (originalUser[key] === this.user[key]) {
+            flags.push(true);
+          } else {
+            flags.push(false);
+          }
+        }
+
+        if (flags.every(el => el)) {
+          return of(true);
+        } else {
+          // Otherwise ask the user with the dialog service and return its
+          // promise which resolves to true or false when the user decides
+          return this.dialogService.confirm('Discard changes?');
+        }
+      })
+    );
   }
 
 }

@@ -1,6 +1,9 @@
+<p *ngIf="(usersError$ | async) as errorMessage">{{errorMessage}}</p>
+
 <epa-user 
   *ngFor="let user of users$ | async" 
   [user]="user"
   [class.edited]="isEdited(user)"
-  (editUser)="onEditUser($event)">
+  (editUser)="onEditUser($event)"
+  (deleteUser)="onDeleteUser($event)">
 </epa-user>

@@ -8,9 +8,6 @@ import {
   LoadProductListAction,
   LoadProductListSuccess,
   LoadProductListError,
-  LoadProductAction,
-  LoadProductSuccess,
-  LoadProductError,
   UpdateProductAction,
   UpdateProductSuccess,
   UpdateProductError,
@@ -30,7 +27,6 @@ import { AppState } from '..';
 export class  ProductsEffects {
 
   constructor(
-    private store: Store<AppState>,
     private actions$: Actions,
     private productService: ProductService
   ) { }
@@ -42,18 +38,6 @@ export class  ProductsEffects {
         this.productService.getProducts()
           .then(products => LoadProductListSuccess({products}))
           .catch(err => LoadProductListError(err))
-      )
-    )
-  );
-
-  loadProduct$: Observable<Action> = createEffect( () =>
-    this.actions$.pipe(
-      ofType(LoadProductAction),
-      pluck('sku'),
-      switchMap( sku =>
-        this.productService.getProduct(sku)
-          .then(product => LoadProductSuccess({product}))
-          .catch(err => LoadProductError(err))
       )
     )
   );

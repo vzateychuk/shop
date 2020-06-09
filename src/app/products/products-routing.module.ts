@@ -18,8 +18,7 @@ const routes: Routes = [
       {
         path: 'edit/:sku',
         component: ProductEditComponent,
-        canDeactivate: [CanDeactivateGuard],
-        resolve: {product: ProductResolveGuard}
+        canDeactivate: [CanDeactivateGuard]
       },
       {
         path: '',

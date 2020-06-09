@@ -4,9 +4,6 @@ import {
   LoadProductListAction,
   LoadProductListSuccess,
   LoadProductListError,
-  LoadProductAction,
-  LoadProductSuccess,
-  LoadProductError,
   CreateProductAction,
   CreateProductSuccess,
   CreateProductError,
@@ -20,7 +17,6 @@ import {
   AddToCartProductSuccess,
   AddToCartProductError
 } from './products.actions';
-import { ProductModel, Product } from 'src/app/shared';
 
 export const productsFeatureKey = 'products';
 
@@ -31,15 +27,12 @@ const reducer = createReducer(
   }),
   on(LoadProductListSuccess, (state, {products}) => {
     const data = [...products];
-    return {...state, data, loading: false, loaded: true, selectedProduct: null};
-  }),
-
-  on(LoadProductAction, state => {
-    return {...state, loading: true};
-  }),
-  on(LoadProductSuccess, (state, {product}) => {
-    const selectedProduct = {...product};
-    return {...state, selectedProduct, loading: false, loaded: true};
+    return {
+      ...state,
+      data,
+      loading: false,
+      loaded: true
+    };
   }),
 
   on(UpdateProductAction, state => {
@@ -89,7 +82,6 @@ const reducer = createReducer(
   // error handler
   on(
     LoadProductListError,
-    LoadProductError,
     UpdateProductError,
     CreateProductError,
     DeleteProductsError,

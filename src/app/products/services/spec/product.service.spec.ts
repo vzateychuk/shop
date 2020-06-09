@@ -6,7 +6,7 @@ import {
 
 import { Product, ProductModel, Category } from 'src/app/shared';
 
-import { ProductService } from './product.service';
+import { ProductService } from '../product.service';
 
 const productResponse: Product = new ProductModel('sku', 'name', Category.Durable, 1, 1.99);
 const updatedProduct: Product = new ProductModel('sku-another', 'another-product', Category.Nondurable, 1, 1.99);
