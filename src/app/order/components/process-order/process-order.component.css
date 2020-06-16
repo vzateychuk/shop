@@ -1,0 +1,6 @@
+.my-border-class {
+    border: 1px dashed lightblue;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px;
+}

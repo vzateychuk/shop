@@ -1,0 +1,200 @@
+<div class='panel panel-primary'>
+    <div class='panel-heading'>
+        Order
+    </div>
+
+    <div class='panel-body'>
+        <form class='form-horizontal'
+            (ngSubmit)='onSave()'
+            [formGroup]='orderForm'>
+            <fieldset>
+
+                <!-- Customer Name -->
+                <div class='form-group' [ngClass]="{'has-error': validationMessage}">
+                    
+                    <label class='col-md-2 control-label'
+                           for='customer'>Customer Name</label>
+                    <div class='col-md-8'>
+                        <input class='form-control'
+                               id='customer'
+                               type='text'
+                               formControlName='customerControl'
+                               (blur)="onBlur('customerControl')"
+                               placeholder='Customer Name (required)'/>
+
+                        <span class="help-block" *ngIf="validationMessage">
+                                {{ validationMessage }}
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Contact customer switch -->
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Contact customer with:</label>
+                    <div class="col-md-8">
+                        <label class="radio-inline">
+                        <input type="radio"
+                                value="email"
+                                (click)="onSetNotification('email')"
+                                formControlName="notification">Email
+                        </label>
+                        <label class="radio-inline">
+                        <input type="radio"
+                                value="text"
+                                (click)="onSetNotification('phone')"
+                                formControlName="notification">Phone
+                        </label>
+
+                        <span class="help-block" *ngIf="validationMessage">
+                            {{ validationMessage }}
+                       </span>
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class='form-group'
+                    [ngClass]="{'has-error': (orderForm.get('emailControl').touched || orderForm.get('emailControl').dirty) && !orderForm.get('emailControl').valid }">
+                    <label class='col-md-2 control-label'
+                        for='email'>Email</label>
+
+                    <div class='col-md-8'>
+                        <input class='form-control'
+                               id='email'
+                               type='email'                               
+                               formControlName='emailControl'
+                               placeholder='{{placeholder.email}}'/>
+                    </div>
+
+                    <span class="help-block" *ngIf="(orderForm.get('emailControl').touched || orderForm.get('emailControl').dirty) && orderForm.get('emailControl').errors">
+                        <span *ngIf="orderForm.get('emailControl').hasError('required')">
+                            Please enter your email.
+                        </span>
+                    </span>
+                </div>
+
+                <!-- Phone -->
+                <div class='form-group'
+                    [ngClass]="{'has-error': (orderForm.get('phoneControl').touched || orderForm.get('phoneControl').dirty) && !orderForm.get('phoneControl').valid }">
+                    <label class='col-md-2 control-label' for='phone'>Phone</label>
+                    <div class='col-md-8'>
+                        <input class='form-control'
+                            id='phone'
+                            type='text'                               
+                            formControlName='phoneControl'
+                            placeholder='{{placeholder.phone}}'/>
+                    </div>
+                    <span class="help-block" *ngIf="(orderForm.get('phoneControl').touched || orderForm.get('phoneControl').dirty) && orderForm.get('phoneControl').errors">
+                        <span *ngIf="orderForm.get('phoneControl').hasError('required')">
+                            Please enter your phone number.
+                        </span>
+                    </span>
+                </div>
+
+                <!-- Self-delivery checkbox -->
+                <div class='form-group'>
+                    <div class='col-md-offset-1 col-md-8 checkbox' >
+                        <label>
+                            <input id='selfDelivery'
+                                   type='checkbox'
+                                   formControlName='selfDeliveryControl'
+                                   (click)="onSelfDeliveryClick()">
+                            Self-delivery
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Address -->
+                <div>
+                     <div class='form-group'
+                        [ngClass]="{'has-error': (orderForm.get('addressControl').touched || orderForm.get('addressControl').dirty) && orderForm.get('addressControl').errors }">
+                        <label class='col-md-2 control-label'
+                            for='address'>Address</label>
+                        <div class='col-md-8'>
+                            <select class='form-control'
+                                id='address'
+                                formControlName='addressControl'>
+                                <option value=''>Select a Address...</option>
+                                <option *ngFor='let address of addresses'
+                                        value='{{address}}'>{{address}}
+                                </option>
+                                </select>
+                        </div>
+                    </div>
+                    <span class="help-block" *ngIf="(orderForm.get('addressControl').touched || orderForm.get('addressControl').dirty) && orderForm.get('addressControl').errors">
+                        <span *ngIf="orderForm.get('addressControl').hasError('addressValidator')">
+                            Expected values: Russia, Belarus, Ukraine
+                        </span>
+                    </span>
+                </div>
+
+                <!-- Products -->
+                <div formArrayName='products'>
+                    <!-- Add product button -->
+                    <div class="form-group">
+                        <div class="col-md-4 col-md-offset-2">
+                          <button class="btn btn-primary"
+                                  type="button"
+                                  (click)="onAddProduct()">
+                            Add +Product
+                          </button>
+                        </div>
+                    </div>
+                    <!-- products list -->
+                    <div *ngFor='let product of getProducts.controls; let i = index'
+                        [formGroupName]='i' >
+                        <div  class="my-border-class">
+                            <div class="form-group">
+                                <label class="col-md-2 control-label"
+                                    attr.for="sku_{{i}}">SKU</label>
+                                <div class="col-md-8">
+                                    <input type="text"
+                                           class="form-control"
+                                           id="sku_{{i}}"
+                                           formControlName='skuCtl'
+                                           placeholder="Product SKU">
+                                </div>
+                            </div>
+        
+                            <div class="form-group">
+                                <label class="col-md-2 control-label" 
+                                    attr.for="product_{{i}}">Product name</label>
+                                <div class="col-md-8">
+                                    <input type="text"
+                                           class="form-control"
+                                           id="product_{{i}}"
+                                           formControlName='productCtl'
+                                           placeholder="Product name">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- Save button -->
+                <div class='form-group'>
+                    <div class='col-md-4 col-md-offset-2'>
+                        <span>
+                            <button class='btn btn-primary'
+                                    type='submit'
+                                    [disabled]='!orderForm.valid'>
+                                Save
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+        <div>
+            <button class='btn btn-primary'
+                (click)='onLogFormModel()'>
+                Log form model
+            </button>
+        </div>
+    </div>
+</div>
+
+<br>Dirty: {{ orderForm.dirty }}
+<br>Touched: {{ orderForm.touched }}
+<br>Valid: {{ orderForm.valid }}
+<br>Value: {{ orderForm.value | json }}
+<br>Form Status: {{orderForm.status }}

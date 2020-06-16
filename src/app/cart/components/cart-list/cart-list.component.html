@@ -1,8 +1,15 @@
 <h1>Cart:</h1>
-<button class='btn btn-outline-danger' (click)='onDeleteAll()'>
+<button class='btn btn-danger'
+    (click)='onDeleteAll()'>
     Delete All
+</button>
+&nbsp;
+<button class='btn btn-primary'
+    (click)='onOrder()'>
+    Order
 </button>
 
 <epa-cart-view *ngFor="let item of (cartItem$ | async)" 
-    [cartItem]="item" (deleteItem)="onDeleteItem($event)" epaHost>
+    [cartItem]="item"
+    (deleteItem)="onDeleteItem($event)" epaHost>
 </epa-cart-view>

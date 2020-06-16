@@ -4,7 +4,7 @@
       "sku": "MYSHOES",
       "name": "My shoes",
       "category": "Durable",
-      "amountAvailable": 42,
+      "amountAvailable": 33,
       "price": 109.99,
       "description": "Black Running Shoes"
     },
@@ -12,7 +12,7 @@
       "sku": "PANTS",
       "name": "My beautiful pants",
       "category": "Durable",
-      "amountAvailable": 410,
+      "amountAvailable": 407,
       "price": 117.99,
       "description": "Attractive pants"
     },

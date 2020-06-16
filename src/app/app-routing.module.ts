@@ -1,9 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AboutComponent, PathNotFoundComponent, LoginComponent } from './layout';
+import { ProcessOrderComponent } from './order/components/process-order/process-order.component';
 
 
 const routes: Routes = [
+  {
+    path: 'order',
+    component: ProcessOrderComponent
+  },
   {
     path: 'about',
     component: AboutComponent

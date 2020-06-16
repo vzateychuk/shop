@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { CartModule } from './cart/cart.module';
 import { ProductsModule } from './products/products.module';
 import { SharedModule } from './shared/shared.module';
+import { OrderModule } from './order/order.module';
 
 // Store
 import { RootStoreModule } from './core/@ngrx/root-store.module';
@@ -17,6 +18,7 @@ import { RootStoreModule } from './core/@ngrx/root-store.module';
 import { AppRoutingModule } from './app-routing.module';
 import { LayoutModule } from './layout/layout.module';
 import { SpinnerModule } from './widgets/spinner/spinner.module';
+import { ValidatorsModule } from './validators/validators.module';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,9 @@ import { SpinnerModule } from './widgets/spinner/spinner.module';
     CartModule,
     ProductsModule,
     SharedModule,
+    OrderModule,
     RootStoreModule,
+    ValidatorsModule,
     AppRoutingModule
   ],
   providers: [],

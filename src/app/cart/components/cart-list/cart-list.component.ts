@@ -10,6 +10,7 @@ import {
   DeleteAllCartAction,
   selectCartData
 } from 'src/app/core/@ngrx/cart';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'epa-cart-list',
@@ -21,6 +22,7 @@ export class CartListComponent implements OnInit {
   cartItem$: Observable<ReadonlyArray<CartItem>>;
 
   constructor(
+    private router: Router,
     private store: Store<AppState>
   ) { }
 
@@ -37,4 +39,7 @@ export class CartListComponent implements OnInit {
     this.store.dispatch( DeleteAllCartAction() );
   }
 
+  onOrder() {
+    this.router.navigate(['order']);
+  }
 }
