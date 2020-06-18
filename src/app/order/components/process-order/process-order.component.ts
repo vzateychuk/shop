@@ -48,6 +48,10 @@ export class ProcessOrderComponent implements OnInit, OnDestroy {
     private fb: FormBuilder
   ) { }
 
+  get getProducts(): FormArray {
+    return this.orderForm.get('products') as FormArray;
+  }
+
   ngOnInit(): void {
     this.orderForm = this.buildForm();
     this.watchValueChanges();
@@ -104,13 +108,8 @@ export class ProcessOrderComponent implements OnInit, OnDestroy {
     }
   }
 
-  onBlur(controlName: string) {
-    const control = this.orderForm.get(controlName);
+  onBlur(control: AbstractControl, controlName: string) {
     this.setValidationMessage(control, controlName);
-  }
-
-  get getProducts(): FormArray {
-    return this.orderForm.get('products') as FormArray;
   }
 
   onAddProduct(): void {
