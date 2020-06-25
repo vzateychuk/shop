@@ -8,9 +8,9 @@ import { Product, ProductModel, Category } from 'src/app/shared';
 
 import { ProductService } from '../product.service';
 
-const productResponse: Product = new ProductModel('sku', 'name', Category.Durable, 1, 1.99);
+const product: Product = new ProductModel('sku', 'name', Category.Durable, 1, 1.99);
 const updatedProduct: Product = new ProductModel('sku-another', 'another-product', Category.Nondurable, 1, 1.99);
-const productListResponse: Array<Product> = [ productResponse ];
+const productList: Array<Product> = [ product ];
 
 describe('ProductService', () => {
   let service: ProductService;
@@ -39,7 +39,7 @@ describe('ProductService', () => {
 
   it('getProducts() should return products list', (done: DoneFn) => {
     service.getProducts().then(result => {
-      expect(result).toBe(productListResponse);
+      expect(result).toBe(productList);
       done();
     });
 
@@ -52,31 +52,42 @@ describe('ProductService', () => {
 
     // Запрос в ожидании, и пока ответ не отправляется.
     // Чтобы запустить цепочку запрос-ответ, нужно выполнить mockRequest.flush
-    mockRequest.flush(productListResponse); // mockResponse contains fake data
+    mockRequest.flush(productList); // mockResponse contains fake data
   });
 
-  it('getProduct(sku) should return product', (done: DoneFn) => {
-    service.getProduct(productResponse.sku).then(result => {
-      expect(result).toBe(productResponse);
+  it('getProducts() should handle http error', (done: DoneFn) => {
+    service.getProducts().catch(err => {
+      expect(err).toBe('Http failure response for http://localhost:3000/products: 0 ');
       done();
     });
 
-    const productUrl = `${service.baseUrl}/${productResponse.sku}`;
+    const mockRequest = httpMock.expectOne(service.baseUrl);
+
+    mockRequest.error(new ErrorEvent('Error happend')); // mockResponse contains fake data
+  });
+
+  it('getProduct(sku) should return product', (done: DoneFn) => {
+    service.getProduct(product.sku).then(result => {
+      expect(result).toBe(product);
+      done();
+    });
+
+    const productUrl = `${service.baseUrl}/${product.sku}`;
     const mockRequest = httpMock.expectOne(productUrl);
 
     expect (mockRequest.cancelled).toBeFalsy(); //  Проверим что запрос не был отменен
     expect(mockRequest.request.responseType).toEqual('json'); // проверяем что запросили json
     expect(mockRequest.request.method).toEqual('GET'); // проверяем что тип запроса - GET
-    mockRequest.flush(productResponse); // mockResponse contains fake data
+    mockRequest.flush(product); // mockResponse contains fake data
   });
 
   it('updateProduct(product) should return updated product', (done: DoneFn) => {
-    service.updateProduct(productResponse).then(result => {
+    service.updateProduct(product).then(result => {
       expect(result).toBe(updatedProduct);
       done();
     });
 
-    const productUrl = `${service.baseUrl}/${productResponse.sku}`;
+    const productUrl = `${service.baseUrl}/${product.sku}`;
     const mockRequest = httpMock.expectOne(productUrl);
 
     expect (mockRequest.cancelled).toBeFalsy(); //  Проверим что запрос не был отменен
@@ -86,8 +97,8 @@ describe('ProductService', () => {
   });
 
   it('createProduct(product) should invoke http.POST & return created product', (done: DoneFn) => {
-    service.createProduct(productResponse).then(result => {
-      expect(result).toBe(productResponse);
+    service.createProduct(product).then(result => {
+      expect(result).toBe(product);
       done();
     });
 
@@ -95,28 +106,44 @@ describe('ProductService', () => {
     expect(mockRequest.cancelled).toBeFalsy();
     expect(mockRequest.request.responseType).toEqual('json');
     expect(mockRequest.request.method).toEqual('POST');
-    mockRequest.flush(productResponse);
+    mockRequest.flush(product);
   });
 
   it('deleteProduct(product) should invoke http.delete & return deleted', (done: DoneFn) => {
-    service.deleteProduct(productResponse).then(result => {
-      expect(result).toBe(productResponse);
+    service.deleteProduct(product).then(result => {
+      expect(result).toBe(product);
       done();
     });
 
-    const deleteUrl = `${service.baseUrl}/${productResponse.sku}`;
+    const deleteUrl = `${service.baseUrl}/${product.sku}`;
     const mockRequest = httpMock.expectOne(deleteUrl);
     expect(mockRequest.cancelled).toBeFalsy();
     expect(mockRequest.request.responseType).toEqual('json');
     expect(mockRequest.request.method).toEqual('DELETE');
-    mockRequest.flush(productResponse);
+    mockRequest.flush(product);
   });
 
-  xit('addToCard(...) should return error when no products available', (done: DoneFn) => {
-    const toSell = productResponse.amountAvailable + 1;
-    service.addToCard(productResponse, toSell).catch(err => {
-      console.log(err);
-      expect(err.statusText).toBe('Not enough product');
+  it('addToCard(product) should update the product', (done: DoneFn) => {
+    service.addToCard(product, 1).then(result => {
+      expect(result).toBe(updatedProduct);
+      done();
+    });
+
+    const productUrl = `${service.baseUrl}/${product.sku}`;
+    const mockRequest = httpMock.expectOne(productUrl);
+
+    expect (mockRequest.cancelled).toBeFalsy(); //  Проверим что запрос не был отменен
+    expect(mockRequest.request.responseType).toEqual('json'); // проверяем что запросили json
+    expect(mockRequest.request.method).toEqual('PUT'); // проверяем что тип запроса - PUT
+    mockRequest.flush(updatedProduct); // run the test. mock contains fake data
+  });
+
+  it('addToCard returns error when no products available', (done: DoneFn) => {
+    const amount = product.amountAvailable + 1;
+    // const amount = 5;
+    service.addToCard(product, amount).catch(err => {
+      expect(err).toBe('Not enough product');
+      done();
     });
   });
 });

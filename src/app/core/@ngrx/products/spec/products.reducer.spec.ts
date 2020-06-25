@@ -1,4 +1,4 @@
-import { reducer } from '..';
+import { productsReducer } from '../products.reducer';
 import {initialProductsState} from '../products.state';
 
 describe('Products Reducer', () => {
@@ -6,7 +6,7 @@ describe('Products Reducer', () => {
     it('should return the previous state', () => {
       const action = {} as any;
 
-      const result = reducer(initialProductsState, action);
+      const result = productsReducer(initialProductsState, action);
 
       expect(result).toBe(initialProductsState);
     });

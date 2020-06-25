@@ -1,4 +1,4 @@
-import { reducer } from '../cart.reducer';
+import { cartReducer } from '../cart.reducer';
 import { initialCartState } from '../cart.state';
 
 describe('Cart Reducer', () => {
@@ -6,7 +6,7 @@ describe('Cart Reducer', () => {
     it('should return the previous state', () => {
       const action = {} as any;
 
-      const result = reducer(initialCartState, action);
+      const result = cartReducer(initialCartState, action);
 
       expect(result).toBe(initialCartState);
     });

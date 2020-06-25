@@ -6,7 +6,6 @@ import { Observable, Subscription } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import * as UsersActions from './../../../core/@ngrx/users/users.actions';
 import { AppState, selectUsers, selectUsersError, selectEditedUser } from './../../../core/@ngrx';
-import * as RouterActions from '../../../core/@ngrx/router/router.actions';
 
 import { UserModel, User } from './../../models/user.model';
 

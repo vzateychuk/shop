@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Product, ProductModel, } from 'src/app/shared';
-import { ActivatedRoute, Router, UrlTree } from '@angular/router';
+import { Product } from 'src/app/shared';
+import { Router, UrlTree } from '@angular/router';
 // rxjs
-import { Observable, Subscription, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import {
   AppState,
   UpdateProductAction,
@@ -10,9 +10,8 @@ import {
   getProductByUrl
 } from 'src/app/core/@ngrx';
 import { Store, select } from '@ngrx/store';
-import { error } from 'protractor';
 import { CanComponentDeactivate, DialogService } from 'src/app/core';
-import { pluck, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'epa-product-edit',

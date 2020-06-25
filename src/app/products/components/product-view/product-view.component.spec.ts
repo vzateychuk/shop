@@ -43,11 +43,11 @@ describe('ProductViewComponent', () => {
     elTitle = deTitle.nativeElement;
   });
 
-  it('should be created', () => {
+  it('Should be created', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display a SKU in title', () => {
+  it('Should display a SKU in title', () => {
     expect(elTitle.textContent).toContain(productConst.sku);
   });
 
